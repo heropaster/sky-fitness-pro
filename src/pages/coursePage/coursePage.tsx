@@ -1,8 +1,7 @@
 import { useParams } from 'react-router-dom'
 import mock from 'mock.json'
+import { Application, Header } from 'components'
 import style from './coursePage.module.scss'
-import { Header } from 'components'
-import { Application } from 'components/Application/Application.tsx'
 
 export const CoursePage = () => {
   const { name } = useParams()
