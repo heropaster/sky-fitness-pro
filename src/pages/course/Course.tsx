@@ -4,8 +4,20 @@ import { ProgressBar } from 'components/ProgressBar/ProgressBar'
 import videoPoster from './img/videoPoster.png'
 import videoButtonPlay from './img/videoButtonPlay.svg'
 import styles from './Course.module.scss'
+import { ProgressModal } from 'components/ProgressModal/ProgressModal'
+import { useState } from 'react'
 
 export const Course = () => {
+  const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
+
+  const handleOpenModal = () => {
+    setIsModalVisible(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalVisible(false)
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.content}>
@@ -24,7 +36,12 @@ export const Course = () => {
               <li className={styles.tasksListItem}>Наклон назад (10 повторений)</li>
               <li className={styles.tasksListItem}>Поднятие ног, согнутых в коленях (5 повторений)</li>
             </ul>
-            <Button variant="base" children={'Заполнить свой прогресс'} fontSize={18}/>
+            <Button
+              variant="base"
+              children={'Заполнить свой прогресс'}
+              fontSize={18}
+              onClick={handleOpenModal}
+            />
           </div>
           <div className={styles.progress}>
             <p className={styles.heading}>Мой прогресс по тренировке 2:</p>
@@ -45,6 +62,7 @@ export const Course = () => {
           </div>
         </div>
       </div>
+      {isModalVisible && <ProgressModal />}
     </div>
   )
 }
