@@ -7,17 +7,20 @@ import stepImg from './img/step.png'
 import bodyflexImg from './img/bodyflex.png'
 
 import style from './Main.module.scss'
+import { useNavigate } from 'react-router-dom'
 
 export const Main = () => {
+  const history = useNavigate()
+
   const fakeState = [
-    { title: 'Йога', img: yogaImg },
-    { title: 'Стретчинг', img: stratchingImg },
-    { title: 'Танцевальный фитнес', img: danceImg },
-    { title: 'Степ-аэробика', img: stepImg },
-    { title: 'Бодифлекс', img: bodyflexImg },
+    { title: 'Йога', img: yogaImg, course: 'yoga' },
+    { title: 'Стретчинг', img: stratchingImg, course: 'stretching' },
+    { title: 'Танцевальный фитнес', img: danceImg, course: 'dance' },
+    { title: 'Степ-аэробика', img: stepImg, course: 'aerobics' },
+    { title: 'Бодифлекс', img: bodyflexImg, course: 'bodyflex' },
   ]
   const cards = fakeState.map((card) => (
-    <FitnessCard key={card.title} image={card.img}>
+    <FitnessCard key={card.title} image={card.img} onClick={() => history(`courses/${card.course}`)}>
       {card.title}
     </FitnessCard>
   ))
