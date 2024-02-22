@@ -1,10 +1,15 @@
+import { FC } from 'react'
 import { Input } from 'components/UI/Input/Input'
 import { useState } from 'react'
 import { Button } from 'components'
 import sticker from './img/sticker.png'
 import styles from './ProgressModal.module.scss'
 
-export const ProgressModal = () => {
+interface ProgressModalProps {
+  closeModal: () => void
+}
+
+export const ProgressModal: FC<ProgressModalProps> = ({ closeModal }) => {
   const [firstValue, setFirstValue] = useState<string | number>('')
   const [secondValue, setSecondValue] = useState<string | number>('')
   const [thirdValue, setThirdValue] = useState<string | number>('')
@@ -16,8 +21,8 @@ export const ProgressModal = () => {
   }
 
   return (
-    <div className={styles.background}>
-      <div className={styles.container}>
+    <div className={styles.background} onClick={closeModal}>
+      <div className={styles.container} onClick={(event) => event.stopPropagation()}>
         {isResponseFinished ? (
           <div className={styles.finishedModal}>
             <p className={styles.finishedModalText}>

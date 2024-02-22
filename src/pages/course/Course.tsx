@@ -19,7 +19,7 @@ export const Course = () => {
   }
 
   return (
-    <div className={styles.container}>
+    <div className={isModalVisible ? styles.modalContainer : styles.courseContainer}>
       <div className={styles.content}>
         <Header />
         <h1 className={styles.title}>Йога</h1>
@@ -36,12 +36,7 @@ export const Course = () => {
               <li className={styles.tasksListItem}>Наклон назад (10 повторений)</li>
               <li className={styles.tasksListItem}>Поднятие ног, согнутых в коленях (5 повторений)</li>
             </ul>
-            <Button
-              variant="base"
-              children={'Заполнить свой прогресс'}
-              fontSize={18}
-              onClick={handleOpenModal}
-            />
+            <Button variant="base" children={'Заполнить свой прогресс'} fontSize={18} onClick={handleOpenModal} />
           </div>
           <div className={styles.progress}>
             <p className={styles.heading}>Мой прогресс по тренировке 2:</p>
@@ -62,7 +57,7 @@ export const Course = () => {
           </div>
         </div>
       </div>
-      {isModalVisible && <ProgressModal />}
+      {isModalVisible && <ProgressModal closeModal={handleCloseModal} />}
     </div>
   )
 }

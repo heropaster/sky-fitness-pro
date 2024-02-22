@@ -1,8 +1,18 @@
-.container {
+.courseContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
+}
+
+.modalContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
   position: relative;
 }
 

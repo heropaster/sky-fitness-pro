@@ -11,16 +11,19 @@ export const ProgressBar: FC<ProgressBarProps> = ({ maxValue, currentValue, vari
   const containerVariantClass: string = styles[`container-${variant}`]
   const fillerVariantClass: string = styles[`filler-${variant}`]
 
-  const getCurrentProgress: () => number = () => {
-    const currentProgress = (currentValue * 100) / maxValue
-    return Math.floor(currentProgress)
-  }
+  const currentProgress = Math.floor((currentValue * 100) / maxValue)
 
   return (
     <div className={`${styles.container} ${containerVariantClass}`}>
-      <div className={`${styles.filler} ${fillerVariantClass}`} style={{ width: `${getCurrentProgress()}%` }}>
-        <span className={styles.progressValue}>{`${getCurrentProgress()}%`}</span>
+      <div className={`${styles.filler} ${fillerVariantClass}`} style={{ width: `${currentProgress}%` }}>
+        {currentProgress >= 25 && <span className={styles.leftProgressValue}>{`${currentProgress}%`}</span>}
       </div>
+      {currentProgress < 25 && (
+        <span
+          className={styles.rightProgressValue}
+          style={{ left: `${currentProgress + 4}%` }}
+        >{`${currentProgress}%`}</span>
+      )}
     </div>
   )
 }

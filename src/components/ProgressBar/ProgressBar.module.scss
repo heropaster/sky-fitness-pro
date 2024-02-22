@@ -3,6 +3,7 @@
   width: 278px;
   box-sizing: border-box;
   border-radius: 22px;
+  position: relative;
 }
 
 .filler {
@@ -12,7 +13,7 @@
   position: relative;
 }
 
-.progressValue {
+.leftProgressValue {
   position: absolute;
   left: 5px;
   right: 20px;
@@ -23,12 +24,23 @@
   color: #ffffff;
 }
 
+.rightProgressValue {
+  position: absolute;
+  top: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: center;
+  color: #000;
+}
+
 .container-blue {
   border: 2px solid #565eef;
 }
 
 .filler-blue {
   background-color: #565eef;
+  color: #565eef;
 }
 
 .container-orange {
@@ -37,6 +49,7 @@
 
 .filler-orange {
   background-color: #ff6d00;
+  color: #ff6d00;
 }
 
 .container-purple {
@@ -45,4 +58,5 @@
 
 .filler-purple {
   background-color: #9a48f1;
+  color: #9a48f1;
 }
