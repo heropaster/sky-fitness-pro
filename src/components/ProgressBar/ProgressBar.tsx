@@ -1,13 +1,13 @@
-import { FC } from 'react'
+import type { FC } from 'react'
 import styles from './ProgressBar.module.scss'
 
 interface ProgressBarProps {
-  maxValue: number
+  maxValue?: number
   currentValue: number
-  variant: 'blue' | 'orange' | 'purple'
+  variant?: 'blue' | 'orange' | 'purple'
 }
 
-export const ProgressBar: FC<ProgressBarProps> = ({ maxValue, currentValue, variant }) => {
+export const ProgressBar: FC<ProgressBarProps> = ({ maxValue = 100, currentValue, variant = 'blue' }) => {
   const containerVariantClass: string = styles[`container-${variant}`]
   const fillerVariantClass: string = styles[`filler-${variant}`]
 

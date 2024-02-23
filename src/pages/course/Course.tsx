@@ -1,11 +1,8 @@
-import { Header } from 'components'
-import { Button } from 'components/UI/Button/Button'
-import { ProgressBar } from 'components/ProgressBar/ProgressBar'
+import { Header, Button, ProgressBar, ProgressModal } from 'components'
 import videoPoster from './img/videoPoster.png'
 import videoButtonPlay from './img/videoButtonPlay.svg'
-import styles from './Course.module.scss'
-import { ProgressModal } from 'components/ProgressModal/ProgressModal'
 import { useState } from 'react'
+import styles from './Course.module.scss'
 
 export const Course = () => {
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
@@ -43,15 +40,15 @@ export const Course = () => {
             <div className={styles.progressItems}>
               <div className={styles.progressItem}>
                 <p className={styles.progressItemText}>Наклоны вперед</p>
-                <ProgressBar maxValue={100} currentValue={45} variant={'blue'} />
+                <ProgressBar currentValue={45} />
               </div>
               <div className={styles.progressItem}>
                 <p className={styles.progressItemText}>Наклоны назад</p>
-                <ProgressBar maxValue={100} currentValue={45} variant={'orange'} />
+                <ProgressBar currentValue={45} variant={'orange'} />
               </div>
               <div className={styles.progressItem}>
                 <p className={styles.progressItemText}>Поднятие ног, согнутых в коленях</p>
-                <ProgressBar maxValue={100} currentValue={45} variant={'purple'} />
+                <ProgressBar currentValue={45} variant={'purple'} />
               </div>
             </div>
           </div>
