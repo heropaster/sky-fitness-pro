@@ -3,7 +3,7 @@ import { Input } from 'components/UI/Input/Input'
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import { Button } from 'components/UI/Button/Button'
-// import { Logo } from 'components/UI/Logo/Logo'
+import { Logo } from 'components/UI/Logo/Logo'
 
 export function AuthPage() {
   const [login, setLogin] = useState<string | number>('')
@@ -19,7 +19,9 @@ export function AuthPage() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.AuthForm}>
-        <Link to="/">Здесь будет лого</Link>
+        <Link to="/">
+          <Logo />
+        </Link>
         {isLoginMode ? (
           <>
             <div className={styles.inputs}>
@@ -43,8 +45,8 @@ export function AuthPage() {
               />
             </div>
             <div className={styles.buttonBlock}>
-              <Button>Войти</Button>
-              <Button onClick={handleIsLoginMode} variant="transparent">
+              <Button fontSize={18}>Войти</Button>
+              <Button fontSize={18} onClick={handleIsLoginMode} variant="transparent">
                 Зарегистрироваться
               </Button>
             </div>
@@ -80,7 +82,7 @@ export function AuthPage() {
                 }}
               />
             </div>
-            <Button>Войти</Button>
+            <Button fontSize={18}>Войти</Button>
           </>
         )}
       </div>

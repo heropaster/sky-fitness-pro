@@ -1,10 +1,10 @@
 import { Header, Button, FitnessCard } from 'components'
-import sticker from './img/sticker.png'
-import yogaImg from './img/yoga.png'
-import stratchingImg from './img/stratching.png'
-import danceImg from './img/dance.png'
-import stepImg from './img/step.png'
-import bodyflexImg from './img/bodyflex.png'
+import sticker from 'assets/img/sticker.png'
+import yogaImg from 'assets/img/yoga.png'
+import stratchingImg from 'assets/img/stratching.png'
+import danceImg from 'assets/img/dance.png'
+import stepImg from 'assets/img/step.png'
+import bodyflexImg from 'assets/img/bodyflex.png'
 
 import style from './Main.module.scss'
 
