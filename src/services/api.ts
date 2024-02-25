@@ -44,3 +44,12 @@ export const getWorkoutById = async (id:string) => {
         return error;
     }
 }
+
+export const getAllUsers = async () => {
+    try {
+        const response = await axios.get(`${baseUrl}users.json`)
+        return  response.data;
+    } catch (error) {
+        return error;
+    }
+}
