@@ -1,26 +1,25 @@
 import styles from './AuthPage.module.scss'
-import { Input } from 'components/UI/Input/Input'
-import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
-import { Button } from 'components/UI/Button/Button'
-import { Logo } from 'components/UI/Logo/Logo'
-import { useStore } from 'pages/authPage/AuthStore'
+import { Input, Logo, Button } from 'components'
+import { useNavigate } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useStore } from 'store/AuthStore'
+import { fetchLogin } from 'services/api'
 
 export function AuthPage() {
-  const [login, setLogin] = useState<string | number>('')
-  const [password, setPassword] = useState<string | number>('')
+  // юзер: JohnDow пароль: asdf
+  const [login, setLogin] = useState<string | number>('JohnDow')
+  const [password, setPassword] = useState<string | number>('asdf')
   const [repeatPassword, setRepeatPassword] = useState<string | number>('')
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true)
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
 
+  const setUser = useStore((state) => state.setUser)
+
   // Переклчение между логином и регистрацией и сбрасывание ошибки
   const handleIsLoginMode = () => {
     setIsLoginMode(false)
-    setErrorMessage('')
   }
-  // Данные из Zustand
-  const toggleShow = useStore((state) => state.toggleShow)
 
   // Функция входа пользователя и валидация
   const handleLogin = (e: { preventDefault: () => void }) => {
@@ -39,10 +38,13 @@ export function AuthPage() {
         return
       }
       default: {
-        localStorage.setItem('login', JSON.stringify(login))
-        localStorage.setItem('password', JSON.stringify(password))
-        toggleShow()
-        navigate('/profile', { replace: false })
+        fetchLogin({ login, password })
+          .then((response) => {
+            setUser(response)
+            navigate('/profile')
+            return response
+          })
+          .catch((error) => setErrorMessage(error.message))
       }
     }
   }
@@ -68,20 +70,19 @@ export function AuthPage() {
         break
       }
       default: {
-        localStorage.setItem('login', JSON.stringify(login))
-        localStorage.setItem('password', JSON.stringify(password))
-        toggleShow()
-        navigate('/profile', { replace: false })
+        navigate('/profile')
       }
     }
   }
+  // Сбрасывает ошибку при вводе в инпут и при переключении на регистрацию
+  useEffect(() => {
+    setErrorMessage('')
+  }, [login, password, repeatPassword, isLoginMode])
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.AuthForm}>
-        <Link to="/">
-          <Logo />
-        </Link>
+        <Logo />
         {isLoginMode ? (
           <>
             <div className={styles.inputs}>
@@ -89,7 +90,7 @@ export function AuthPage() {
                 inputType={'text'}
                 value={login}
                 placeholderText={'Логин'}
-                onValueChange={(login: string | number) => {
+                onValueChange={(login) => {
                   setLogin(login)
                 }}
               />
@@ -97,7 +98,7 @@ export function AuthPage() {
                 inputType={'password'}
                 value={password}
                 placeholderText={'Пароль'}
-                onValueChange={(password: string | number) => {
+                onValueChange={(password) => {
                   setPassword(password)
                 }}
               />
@@ -111,7 +112,7 @@ export function AuthPage() {
                 Зарегистрироваться
               </Button>
             </div>
-            {errorMessage ? <div className={styles.errorInput}>{errorMessage}</div> : null}
+            {errorMessage && <div className={styles.errorInput}>{errorMessage}</div>}
           </>
         ) : (
           <>
@@ -120,7 +121,7 @@ export function AuthPage() {
                 inputType={'text'}
                 value={login}
                 placeholderText={'Логин'}
-                onValueChange={(login: string | number) => {
+                onValueChange={(login) => {
                   setLogin(login)
                   console.log(login)
                 }}
@@ -129,7 +130,7 @@ export function AuthPage() {
                 inputType={'password'}
                 value={password}
                 placeholderText={'Пароль'}
-                onValueChange={(password: string | number) => {
+                onValueChange={(password) => {
                   setPassword(password)
                 }}
               />
@@ -137,7 +138,7 @@ export function AuthPage() {
                 inputType={'password'}
                 value={repeatPassword}
                 placeholderText={'Повторите пароль'}
-                onValueChange={(repeatPassword: string | number) => {
+                onValueChange={(repeatPassword) => {
                   setRepeatPassword(repeatPassword)
                 }}
               />
@@ -147,7 +148,7 @@ export function AuthPage() {
                 Войти
               </Button>
             </div>
-            {errorMessage ? <div className={styles.errorInput}>{errorMessage}</div> : null}
+            {errorMessage && <div className={styles.errorInput}>{errorMessage}</div>}
           </>
         )}
       </div>

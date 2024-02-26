@@ -2,11 +2,11 @@ import { Routes, Route } from 'react-router-dom'
 import { CoursePage } from 'pages/coursePage/coursePage.tsx'
 import { Main, AuthPage, ProfilePage, Course } from 'pages'
 import { ProtectedRoute } from 'routes/protected-route'
-import { useStore } from 'pages/authPage/AuthStore'
+import { useStore } from 'store/AuthStore'
 
 export function AppRoutes() {
-  const isAuthenticated = useStore((state) => state.isAuthenticated)
-  console.log(isAuthenticated)
+  const isAuthenticated = Boolean(useStore((state) => state.user))
+
   return (
     <Routes>
       <Route element={<ProtectedRoute isAuthenticated={Boolean(isAuthenticated)} />}>
