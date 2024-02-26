@@ -1,0 +1,53 @@
+.box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  z-index: 2;
+}
+.logo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: grey;
+}
+.name {
+  font-size: 24px;
+  line-height: 32px;
+}
+
+.label {
+  position: relative;
+  cursor: pointer;
+}
+
+.checkbox {
+  appearance: none;
+  &:checked + svg {
+    transform: rotateX(180deg);
+  }
+  &:checked ~ .menu {
+    opacity: 1;
+    display: block;
+    top: 30px;
+  }
+  &__svg {
+    transition: transform 0.2s;
+  }
+}
+
+.menu {
+  position: absolute;
+  top: 0;
+  right: 0;
+  opacity: 0;
+  display: none;
+}
+
+.black {
+  color: #000;
+}
+
+.white {
+  color: #fff;
+}
