@@ -1,10 +1,20 @@
 import { Header, Button, ProgressBar, ProgressModal } from 'components'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { getWorkoutById } from 'services/api'
 import videoPoster from './img/videoPoster.png'
 import videoButtonPlay from './img/videoButtonPlay.svg'
-import { useState } from 'react'
-import styles from './Course.module.scss'
+import styles from './WorkoutPage.module.scss'
 
-export const Course = () => {
+export const WorkoutPage = () => {
+  const { id } = useParams()
+
+  if (id) {
+    getWorkoutById(id).then((workout) => {
+      console.log(workout)
+    })
+  }
+
   const [isModalVisible, setIsModalVisible] = useState<boolean>(false)
 
   const handleOpenModal = () => {
