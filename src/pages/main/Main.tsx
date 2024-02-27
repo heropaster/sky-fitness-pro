@@ -1,14 +1,16 @@
 import { Header, Button, FitnessCard } from 'components'
+// --- Импорт изображений ---
 import sticker from 'assets/img/sticker.png'
 import yogaImg from 'assets/img/yoga.png'
 import stratchingImg from 'assets/img/stratching.png'
 import danceImg from 'assets/img/dance.png'
 import stepImg from 'assets/img/step.png'
 import bodyflexImg from 'assets/img/bodyflex.png'
-
-import style from './Main.module.scss'
+// --- Импорт изображений ---
 import { useNavigate } from 'react-router-dom'
 import { useGetAll } from 'hooks'
+
+import style from './Main.module.scss'
 
 export const Main = () => {
   const history = useNavigate()

@@ -3,17 +3,20 @@
   display: flex;
   align-items: center;
   gap: 15px;
-  z-index: 2;
 }
-.logo {
+
+.avatar {
   width: 50px;
   height: 50px;
   border-radius: 50%;
   background-color: grey;
+  cursor: pointer;
 }
+
 .name {
   font-size: 24px;
   line-height: 32px;
+  cursor: pointer;
 }
 
 .label {
@@ -23,14 +26,17 @@
 
 .checkbox {
   appearance: none;
+
   &:checked + svg {
     transform: rotateX(180deg);
   }
+
   &:checked ~ .menu {
     opacity: 1;
     display: block;
     top: 30px;
   }
+
   &__svg {
     transition: transform 0.2s;
   }

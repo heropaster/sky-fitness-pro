@@ -1,20 +1,28 @@
-import type { FC, PropsWithChildren } from 'react'
-import style from './UserGroup.module.scss'
 import { Button } from 'components'
 import { useStore } from 'store/AuthStore'
+import { useNavigate } from 'react-router-dom'
+import type { FC } from 'react'
+import style from './UserGroup.module.scss'
 
 interface UserGroupProps {
   color: 'black' | 'white'
   login: string | number
 }
 
-export const UserGroup: FC<PropsWithChildren & UserGroupProps> = ({ login, color }) => {
+export const UserGroup: FC<UserGroupProps> = ({ login, color }) => {
   const setUser = useStore((store) => store.setUser)
+  const history = useNavigate()
+
+  const goToProfile = () => {
+    history('/profile')
+  }
 
   return (
     <div className={style.box}>
-      <div className={style.logo} />
-      <span className={`${style.name} ${style[color]}`}>{login}</span>
+      <div className={style.avatar} onClick={goToProfile} />
+      <span className={`${style.name} ${style[color]}`} onClick={goToProfile}>
+        {login}
+      </span>
       <label className={style.label}>
         <input className={style.checkbox} type="checkbox" />
         <svg
