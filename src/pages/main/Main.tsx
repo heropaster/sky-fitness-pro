@@ -8,21 +8,11 @@ import bodyflexImg from 'assets/img/bodyflex.png'
 
 import style from './Main.module.scss'
 import { useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
-import { getAll, getAllWorkouts } from 'services/api'
+import { useGetAll } from 'hooks'
 
 export const Main = () => {
   const history = useNavigate()
-  const { data, isLoading, isError, error } = useQuery({
-    queryFn: () => getAll('courses'),
-    queryKey: ['courses', 'all'],
-  })
-
-  const { data: workouts } = useQuery({
-    queryFn: () => getAllWorkouts(),
-    queryKey: ['workouts', 'all'],
-  })
-  if (workouts) console.log('Это воркауты',Object.values(workouts))
+  const { data, isLoading, isError, error } = useGetAll('courses')
 
   if (isLoading) return <div>Загрузка</div>
   if (isError) return <div>{error.message}</div>
