@@ -8,20 +8,39 @@ import bodyflexImg from 'assets/img/bodyflex.png'
 
 import style from './Main.module.scss'
 import { useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
+import { getAll, getAllWorkouts } from 'services/api'
 
 export const Main = () => {
   const history = useNavigate()
+  const { data, isLoading, isError, error } = useQuery({
+    queryFn: () => getAll('courses'),
+    queryKey: ['courses', 'all'],
+  })
 
-  const fakeState = [
-    { title: 'Йога', img: yogaImg, course: 'yoga' },
-    { title: 'Стретчинг', img: stratchingImg, course: 'stretching' },
-    { title: 'Танцевальный фитнес', img: danceImg, course: 'dance' },
-    { title: 'Степ-аэробика', img: stepImg, course: 'aerobics' },
-    { title: 'Бодифлекс', img: bodyflexImg, course: 'bodyflex' },
-  ]
-  const cards = fakeState.map((card) => (
-    <FitnessCard key={card.title} image={card.img} onClick={() => history(`courses/${card.course}`)}>
-      {card.title}
+  const { data: workouts } = useQuery({
+    queryFn: () => getAllWorkouts(),
+    queryKey: ['workouts', 'all'],
+  })
+  if (workouts) console.log('Это воркауты',Object.values(workouts))
+
+  if (isLoading) return <div>Загрузка</div>
+  if (isError) return <div>{error.message}</div>
+  if (!data) return
+
+  const imagesByIndex: Record<string, string> = {
+    '6i67sm': stepImg,
+    ab1c3f: yogaImg,
+    kfpq8e: stratchingImg,
+    q02a6i: bodyflexImg,
+    ypox9r: danceImg,
+  }
+
+  const coursesArray = Object.values(data)
+
+  const cardsElements = coursesArray.map((card) => (
+    <FitnessCard key={card._id} image={imagesByIndex[card._id]} onClick={() => history(`courses/${card.nameEN}`)}>
+      {card.nameRU}
     </FitnessCard>
   ))
 
@@ -36,7 +55,7 @@ export const Main = () => {
           <img className={style.sticker} src={sticker} alt="Измени свое тело за полгода" />
         </div>
 
-        <div className={style.fitnessCards}>{cards}</div>
+        <div className={style.fitnessCards}>{cardsElements}</div>
 
         <footer className={style.footer}>
           <Button onClick={() => window.scrollTo(0, 0)} variant="green" width={150}>

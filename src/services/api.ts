@@ -4,7 +4,38 @@
 // const {data, isLoading, isError, isSuccess} = useQuery({queryFn: () => getAllCourses(), queryKey: ['courses', 'all']})
 import axios from 'axios'
 
+interface ICourse {
+  description: string
+  directions: string[]
+  fitting: string[]
+  nameEN: string
+  nameRU: string
+  order: number
+  workouts: string[]
+  _id: string
+}
+
+interface ICourses {
+  [index: string]: ICourse
+}
+
+interface IWorkout {
+  exercises: { name: string; quantity: number }[]
+  name: string
+  video: string
+  _id: string
+}
+
+interface IWorkouts {
+  [index: string]: IWorkout
+}
+
 const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
+
+export const getAll = async (entity: 'courses' | 'workouts'): Promise<ICourses | IWorkouts> => {
+  const response = await axios.get(`${baseUrl}${entity}.json`)
+  return response.data
+}
 
 export const getAllCourses = async () => {
   try {
