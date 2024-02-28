@@ -6,7 +6,7 @@ import style from './UserGroup.module.scss'
 
 interface UserGroupProps {
   color: 'black' | 'white'
-  login: string | number
+  login: string | null
 }
 
 export const UserGroup: FC<UserGroupProps> = ({ login, color }) => {

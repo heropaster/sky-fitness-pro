@@ -1,16 +1,10 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
-
-interface IUser {
-  id: string
-  login: string | number
-  password: string | number
-  courses: string[]
-}
+import type { ICustomUser } from 'types'
 
 interface IMyStore {
-  user: IUser | null | undefined
-  setUser: (user: IUser | null | undefined) => void
+  user: ICustomUser | null | undefined
+  setUser: (user: ICustomUser | null | undefined) => void
 }
 
 export const useStore = create<IMyStore>()(

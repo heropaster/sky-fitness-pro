@@ -3,12 +3,12 @@ import { Input, Logo, Button } from 'components'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useStore } from 'store/AuthStore'
-import { fetchLogin } from 'services/api'
+import { createNewUser, loginUser } from 'services/api'
 
 export function AuthPage() {
-  // юзер: JohnDow пароль: asdf
-  const [login, setLogin] = useState<string | number>('JohnDow')
-  const [password, setPassword] = useState<string | number>('asdf')
+  // юзер: JohnDow@mail.mail пароль: asdfasdf
+  const [login, setLogin] = useState<string | number>('JohnDow@mail.mail')
+  const [password, setPassword] = useState<string | number>('asdfasdf')
   const [repeatPassword, setRepeatPassword] = useState<string | number>('')
   const [isLoginMode, setIsLoginMode] = useState<boolean>(true)
   const [errorMessage, setErrorMessage] = useState('')
@@ -22,7 +22,7 @@ export function AuthPage() {
   }
 
   // Функция входа пользователя и валидация
-  const handleLogin = (e: { preventDefault: () => void }) => {
+  const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     switch (true) {
       case !login && !password: {
@@ -38,19 +38,22 @@ export function AuthPage() {
         return
       }
       default: {
-        fetchLogin({ login, password })
-          .then((response) => {
-            setUser(response)
-            navigate('/profile')
-            return response
-          })
-          .catch((error) => setErrorMessage(error.message))
+        try {
+          const response = await loginUser({ email: String(login), password: String(password) })
+          console.log(response, 'Это ответ на логин')
+
+          setUser(response)
+          navigate('/profile')
+          return response
+        } catch (error) {
+          if (error instanceof Error) setErrorMessage(error.message)
+        }
       }
     }
   }
 
   // Функция регистрации пользователя и валидация
-  const handleRegistration = (e: { preventDefault: () => void }) => {
+  const handleRegistration = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
     switch (true) {
       case !login && !password: {
@@ -70,7 +73,16 @@ export function AuthPage() {
         break
       }
       default: {
-        navigate('/profile')
+        try {
+          const response = await createNewUser({ email: String(login), password: String(password) })
+          console.log(response, 'Это ответ на логин')
+
+          setUser(response)
+          navigate('/profile')
+          return response
+        } catch (error) {
+          if (error instanceof Error) setErrorMessage(error.message)
+        }
       }
     }
   }

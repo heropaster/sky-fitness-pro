@@ -1,17 +1,23 @@
 import { Header, Button, FitnessCard, ProfileEdit } from 'components'
-import style from './ProfilePage.module.scss'
+// --- Импорт изображений ---
 import yogaImg from 'assets/img/yoga.png'
 import stratchingImg from 'assets/img/stratching.png'
 import bodyflexImg from 'assets/img/bodyflex.png'
+// --- Импорт изображений ---
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useStore } from 'store/AuthStore'
+
+import style from './ProfilePage.module.scss'
 
 export const ProfilePage = () => {
+  const navigate = useNavigate()
+  const user = useStore((store) => store.user)
+  const login = user?.email
+  const password = user?.password
+
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
   const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
-  const navigate = useNavigate()
-  const login = 'какой-то логин'
-  const password = 'некий пароль'
 
   const fakeState = [
     { title: 'Йога', img: yogaImg },

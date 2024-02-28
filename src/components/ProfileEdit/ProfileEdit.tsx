@@ -1,5 +1,7 @@
 import { useState } from 'react'
 import { Button, Logo, Input } from 'components'
+import { updateLogin, updateUserPassword } from 'services/api'
+import { useStore } from 'store/AuthStore'
 import type { FC, MouseEvent, PropsWithChildren } from 'react'
 import style from './ProfileEdit.module.scss'
 
@@ -12,6 +14,22 @@ export const ProfileEdit: FC<PropsWithChildren & ProfileEditProps> = ({ variant 
   const [loginValue, setLoginValue] = useState<string | number>('')
   const [passValue, setPassValue] = useState<string | number>('')
   const [repeatValue, setRepeatValue] = useState<string | number>('')
+
+  const user = useStore((store) => store.user)
+  const setUser = useStore((store) => store.setUser)
+
+  const saveButtonHandler = async () => {
+    if (loginValue && variant === 'login') updateLogin({ email: String(loginValue) })
+
+    if (passValue === repeatValue && variant === 'password') {
+      try {
+        await updateUserPassword({ password: String(passValue) })
+        if (user) setUser({ ...user, password: String(passValue) })
+      } catch (error) {
+        console.warn(error)
+      }
+    }
+  }
 
   return (
     <div className={style.box} onClick={closeFunc}>
@@ -53,7 +71,9 @@ export const ProfileEdit: FC<PropsWithChildren & ProfileEditProps> = ({ variant 
           )}
         </div>
 
-        <Button fontSize={18}>Сохранить</Button>
+        <Button onClick={saveButtonHandler} fontSize={18}>
+          Сохранить
+        </Button>
       </div>
     </div>
   )

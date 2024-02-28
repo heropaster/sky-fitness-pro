@@ -22,7 +22,7 @@ export const Header: FC<PropsWithChildren & HeaderProps> = ({ color = 'black', i
         </Button>
       )}
 
-      {user && <UserGroup color={color} login={user.login} />}
+      {user && <UserGroup color={color} login={user.email} />}
     </header>
   )
 }

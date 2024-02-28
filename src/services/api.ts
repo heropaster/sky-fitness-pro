@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import axios from 'axios'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -9,6 +10,7 @@ import {
 } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { child, get, getDatabase, ref, update } from 'firebase/database'
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -51,13 +53,17 @@ export const initUserProgress = async () => {
   }
 }
 
-export const loginUser = async ({ email, password }: EmailPassword) =>
-  signInWithEmailAndPassword(getAuth(app), email, password)
+export const loginUser = async ({ email, password }: EmailPassword) => {
+  const response = await signInWithEmailAndPassword(getAuth(app), email, password)
+  return { ...response.user, password }
+}
 
 export const createNewUser = async ({ email, password }: EmailPassword) => {
   await createUserWithEmailAndPassword(getAuth(app), email, password)
-  await loginUser({ email, password })
+  const newUser = await loginUser({ email, password })
   initUserProgress()
+
+  return newUser
 }
 
 export const logoutUser = async () => {
@@ -77,6 +83,29 @@ export const updateUserPassword = async ({ password }: EmailPassword) => {
   if (user) return updatePassword(user, password)
 }
 
+export const updateUserProgress = async ({
+  courseId,
+  workoutId,
+  progressArray,
+}: {
+  courseId: string
+  workoutId: string
+  progressArray: number[]
+}) => {
+  const user = getAuth(app).currentUser
+  const db = ref(getDatabase(app))
+
+  if (user) {
+    const { uid } = user
+
+    const exercisePath = `users/${uid}/${courseId}`
+
+    return update(child(db, exercisePath), {
+      [workoutId]: progressArray,
+    })
+  }
+}
+
 export const getDBChild = async <T>(childPath: string) => {
   const db = ref(getDatabase(app))
   const requiredChild = await get(child(db, childPath))
@@ -87,111 +116,111 @@ export const getDBChild = async <T>(childPath: string) => {
   console.warn('Data was no found')
 }
 
-// // Интиерфейсы пока оставил, вдруг пригодятся
-// interface ICourse {
-//   description: string
-//   directions: string[]
-//   fitting: string[]
-//   nameEN: string
-//   nameRU: string
-//   order: number
-//   workouts: string[]
-//   _id: string
-// }
+// Интиерфейсы пока оставил, вдруг пригодятся
+export interface ICourse {
+  description: string
+  directions: string[]
+  fitting: string[]
+  nameEN: string
+  nameRU: string
+  order: number
+  workouts: string[]
+  _id: string
+}
 
-// interface ICourses {
-//   [index: string]: ICourse
-// }
+export interface ICourses {
+  [index: string]: ICourse
+}
 
-// interface IWorkout {
-//   exercises: { name: string; quantity: number }[]
-//   name: string
-//   video: string
-//   _id: string
-// }
+export interface IWorkout {
+  exercises: { name: string; quantity: number }[]
+  name: string
+  video: string
+  _id: string
+}
 
-// interface IWorkouts {
-//   [index: string]: IWorkout
-// }
+export interface IWorkouts {
+  [index: string]: IWorkout
+}
 
-// export interface IUser {
-//   id: string
-//   login: string | number
-//   password: string | number
-//   courses: string[]
-// }
+export interface IUser {
+  id: string
+  login: string | number
+  password: string | number
+  courses: string[]
+}
 
-// const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
+const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
 
-// export const getAll = async (entity: 'courses' | 'workouts'): Promise<ICourses | IWorkouts> => {
-//   const response = await axios.get(`${baseUrl}${entity}.json`)
-//   return response.data
-// }
+export const getAll = async (entity: 'courses' | 'workouts'): Promise<ICourses | IWorkouts> => {
+  const response = await axios.get(`${baseUrl}${entity}.json`)
+  return response.data
+}
 
-// export const getAllCourses = async () => {
-//   try {
-//     const response = await axios.get(`${baseUrl}courses.json`)
-//     return response.data
-//   } catch (error) {
-//     return error
-//   }
-// }
+export const getAllCourses = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}courses.json`)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
 
-// export const getCourseById = async (id: string) => {
-//   try {
-//     const response = await axios.get(`${baseUrl}courses/${id}.json`)
-//     console.log(response.data)
-//     return response.data
-//   } catch (error) {
-//     return error
-//   }
-// }
+export const getCourseById = async (id: string) => {
+  try {
+    const response = await axios.get(`${baseUrl}courses/${id}.json`)
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
 
-// export const getAllWorkouts = async () => {
-//   try {
-//     const response = await axios.get(`${baseUrl}workouts.json`)
-//     console.log(response.data)
-//     return response.data
-//   } catch (error) {
-//     return error
-//   }
-// }
+export const getAllWorkouts = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}workouts.json`)
+    console.log(response.data)
+    return response.data
+  } catch (error) {
+    return error
+  }
+}
 
-// export const getWorkoutById = async (id: string): Promise<IWorkout> => {
-//   const response = await axios.get(`${baseUrl}workouts/${id}.json`)
-//   console.log(response.data)
-//   return response.data
-// }
+export const getWorkoutById = async (id: string): Promise<IWorkout> => {
+  const response = await axios.get(`${baseUrl}workouts/${id}.json`)
+  console.log(response.data)
+  return response.data
+}
 
-// export const fetchLogin = async ({ login, password }: { login: string | number; password: string | number }) => {
-//   try {
-//     const { data: user } = await axios.get(`${baseUrl}users/${login}.json`)
-//     if (user.password !== password) throw new Error('Неправильный пароль')
-//     return user
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       throw new TypeError(error.message)
-//     }
-//   }
-// }
+export const fetchLogin = async ({ login, password }: { login: string | number; password: string | number }) => {
+  try {
+    const { data: user } = await axios.get(`${baseUrl}users/${login}.json`)
+    if (user.password !== password) throw new Error('Неправильный пароль')
+    return user
+  } catch (error) {
+    if (error instanceof Error) {
+      throw new TypeError(error.message)
+    }
+  }
+}
 
-// export const setNewLogin = async (login: string, user: IUser) => {
-//   try {
-//     const requestedUser: IUser = await axios.get(`${baseUrl}users/${login}.json`)
-//     const isFree = !requestedUser?.login
-//     if (isFree) {
-//       return axios({
-//         method: 'patch',
-//         url: `${baseUrl}users.json`,
-//         data: { [login]: { ...user, login: login } },
-//       })
-//     } else {
-//       throw new Error('Такой логин уже занят')
-//     }
-//   } catch (error) {
-//     if (error instanceof Error) {
-//       console.warn(error.message)
-//       throw error
-//     }
-//   }
-// }
+export const setNewLogin = async (login: string, user: IUser) => {
+  try {
+    const requestedUser: IUser = await axios.get(`${baseUrl}users/${login}.json`)
+    const isFree = !requestedUser?.login
+    if (isFree) {
+      return axios({
+        method: 'patch',
+        url: `${baseUrl}users.json`,
+        data: { [login]: { ...user, login: login } },
+      })
+    } else {
+      throw new Error('Такой логин уже занят')
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      console.warn(error.message)
+      throw error
+    }
+  }
+}
