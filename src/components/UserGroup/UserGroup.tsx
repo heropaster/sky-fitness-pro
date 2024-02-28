@@ -3,6 +3,7 @@ import { useStore } from 'store/AuthStore'
 import { useNavigate } from 'react-router-dom'
 import type { FC } from 'react'
 import style from './UserGroup.module.scss'
+import { logoutUser } from 'services/api'
 
 interface UserGroupProps {
   color: 'black' | 'white'
@@ -37,7 +38,14 @@ export const UserGroup: FC<UserGroupProps> = ({ login, color }) => {
           <path d="M12.3552 1.03308L6.67761 6.7107L0.999999 1.03308" strokeWidth="2" />
         </svg>
         <div className={style.menu}>
-          <Button onClick={() => setUser(null)} variant="green" width={100}>
+          <Button
+            onClick={async () => {
+              await logoutUser()
+              setUser(null)
+            }}
+            variant="green"
+            width={100}
+          >
             Выйти
           </Button>
         </div>
