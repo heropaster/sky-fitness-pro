@@ -8,13 +8,13 @@ import stepImg from 'assets/img/step.png'
 import bodyflexImg from 'assets/img/bodyflex.png'
 // --- Импорт изображений ---
 import { useNavigate } from 'react-router-dom'
-import { useGetAll } from 'hooks'
+import { useAllCoursesQuery } from 'hooks'
 
 import style from './Main.module.scss'
 
 export const Main = () => {
   const history = useNavigate()
-  const { data, isLoading, isError, error } = useGetAll('courses')
+  const { data, isLoading, isError, error } = useAllCoursesQuery()
 
   if (isLoading) return <div>Загрузка</div>
   if (isError) return <div>{error.message}</div>

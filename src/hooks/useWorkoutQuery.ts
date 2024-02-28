@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { getWorkoutById } from '../services/api'
+import { getDBChild } from '../services/api'
 
 export const useWorkoutQuery = (id: string) =>
-  useQuery({ queryFn: () => getWorkoutById(id), queryKey: ['workouts', 'id'] })
+  useQuery({ queryFn: () => getDBChild(`workouts/${id}`), queryKey: ['workouts', id] })
