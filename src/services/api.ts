@@ -32,7 +32,9 @@ type EmailPassword = Record<string, string>
 // !!!! Константу нужно потом перенести
 //
 
-const DEFAULT_USER_PROGRESS: { [index: string]: { [index: string]: number[] } } = {
+type UserProgress = Record<string, {[index: string]: number[]}>
+
+const DEFAULT_USER_PROGRESS: UserProgress = {
   q02a6i: {
     '17oz5f': [0, 0, 0],
     pyvaec: [0, 0, 0],
