@@ -103,7 +103,7 @@ export const getDBChild = async <T>(childPath: string) => {
   const db = ref(getDatabase(app))
   const requiredChild = await get(child(db, childPath))
 
-  if (requiredChild.exists()) {
+  if (requiredChild.exists() && requiredChild.val() !== undefined) {
     return requiredChild.val() as T
   }
   console.warn('Data was not found')
@@ -116,7 +116,7 @@ export const getUserState = async () => {
     const { uid } = user
     const path = `users/${uid}`
     return await getDBChild<IUserState>(path)
-  } else return false
+  }
 }
 
 // const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
