@@ -1,10 +1,10 @@
 import type { User } from 'firebase/auth'
-// interface IUser {
-//   id: string
-//   login: string | number
-//   password: string | number
-//   courses: string[]
-// }
+
+export interface IUserState {
+  courses: string[]
+  progress: { [index: string]: { [index: string]: [boolean, ...number[]] } }
+  _id?: string
+}
 
 export interface ICustomUser extends User {
   password: string
