@@ -8,8 +8,10 @@ import {
   updatePassword,
 } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
+import { DEFAULT_USER_STATE } from 'const'
 import { child, get, getDatabase, ref, update } from 'firebase/database'
 
+import type { IUserState } from 'types'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -32,24 +34,14 @@ type EmailPassword = Record<string, string>
 // !!!! Константу нужно потом перенести
 //
 
-type UserProgress = Record<string, {[index: string]: number[]}>
-
-const DEFAULT_USER_PROGRESS: UserProgress = {
-  q02a6i: {
-    '17oz5f': [0, 0, 0],
-    pyvaec: [0, 0, 0],
-    xlpkqy: [0, 0, 0],
-  },
-}
-
-export const initUserProgress = async () => {
+export const initUserState = async () => {
   const user = getAuth(app).currentUser
   if (user) {
     const { uid } = user
     const db = ref(getDatabase(app))
 
     return update(child(db, 'users'), {
-      [uid]: { ...DEFAULT_USER_PROGRESS, _id: uid },
+      [uid]: { ...DEFAULT_USER_STATE, _id: uid },
     })
   }
 }
@@ -62,7 +54,7 @@ export const loginUser = async ({ email, password }: EmailPassword) => {
 export const createNewUser = async ({ email, password }: EmailPassword) => {
   await createUserWithEmailAndPassword(getAuth(app), email, password)
   const newUser = await loginUser({ email, password })
-  initUserProgress()
+  initUserState()
 
   return newUser
 }
@@ -114,10 +106,17 @@ export const getDBChild = async <T>(childPath: string) => {
   if (requiredChild.exists()) {
     return requiredChild.val() as T
   }
-  console.warn('Data was no found')
+  console.warn('Data was not found')
 }
 
-// Интиерфейсы пока оставил, вдруг пригодятся
+export const getUserState = async () => {
+  const user = getAuth(app).currentUser
 
+  if (user) {
+    const { uid } = user
+    const path = `users/${uid}`
+    return await getDBChild<IUserState>(path)
+  } else return false
+}
 
 // const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
