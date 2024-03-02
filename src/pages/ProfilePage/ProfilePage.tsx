@@ -1,12 +1,10 @@
 import { Header, Button, FitnessCard, ProfileEdit } from 'components'
-import yogaImg from 'assets/img/yoga.png'
-import stratchingImg from 'assets/img/stratching.png'
-import bodyflexImg from 'assets/img/bodyflex.png'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useStore } from 'store/AuthStore'
 import { useAllCoursesQuery, useUserStateQuery } from 'hooks'
 import style from './ProfilePage.module.scss'
+import { imagesMap } from 'const'
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
@@ -14,34 +12,30 @@ export const ProfilePage = () => {
   const login = user?.email
   const password = user?.password
 
-  // Здесь есть проблема
   const userStateQuery = useUserStateQuery()
-  console.log(userStateQuery.isSuccess && userStateQuery.data)
+  const userState = userStateQuery.data
 
-  // Здесь нет проблем
   const coursesQuery = useAllCoursesQuery()
-  console.log(coursesQuery.isSuccess && coursesQuery.data)
+  const coursesFromDB = coursesQuery.data
 
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
   const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
 
-  const fakeState = [
-    { title: 'Йога', img: yogaImg },
-    { title: 'Стретчинг', img: stratchingImg },
-    { title: 'Бодифлекс', img: bodyflexImg },
-  ]
-  const cards = fakeState.map((card) => (
-    <FitnessCard
-      buttonOnClick={() => navigate('/')}
-      variant="myProfile"
-      key={card.title}
-      hasButton={true}
-      image={card.img}
-    >
-      {card.title}
-    </FitnessCard>
-  ))
-  // (event: MouseEvent<Element, MouseEvent>) => void
+  const cardElements =
+    userState &&
+    coursesFromDB ?
+    userState?.courses.map((course, index) => (
+      <FitnessCard
+        buttonOnClick={() => navigate(`/workouts/${coursesFromDB[course].nameEN}`)}
+        variant="myProfile"
+        key={'card' + index}
+        hasButton={true}
+        image={imagesMap[course]}
+      >
+        {coursesFromDB[course].nameRU}
+      </FitnessCard>
+    )): <div className={style.notFound}>Нет курсов</div>
+
   const closeFunc = () => {
     setPopUp(null)
   }
@@ -78,7 +72,7 @@ export const ProfilePage = () => {
         </div>
         <h2 className={style.title}>Мои курсы</h2>
 
-        <div className={style.cards}>{cards}</div>
+        <div className={style.cards}>{cardElements}</div>
       </div>
     </div>
   )
