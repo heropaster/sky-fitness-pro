@@ -9,7 +9,7 @@ import {
   updatePassword,
 } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
-import { DEFAULT_USER_STATE } from 'const'
+import { DEFAULT_USER_STATE } from 'consts'
 import { child, get, getDatabase, ref, update } from 'firebase/database'
 
 // Your web app's Firebase configuration
