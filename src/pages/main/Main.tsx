@@ -1,5 +1,5 @@
 import { Header, Button, FitnessCard } from 'components'
-import { imagesMap } from 'const'
+import { imagesMap } from 'consts'
 import sticker from 'assets/img/sticker.png'
 import { useNavigate } from 'react-router-dom'
 import { useAllCoursesQuery } from 'hooks'

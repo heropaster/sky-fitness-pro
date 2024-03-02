@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import { useStore } from 'store/AuthStore'
 import { useAllCoursesQuery, useUserStateQuery } from 'hooks'
 import style from './ProfilePage.module.scss'
-import { imagesMap } from 'const'
+import { imagesMap } from 'consts'
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
@@ -22,19 +22,21 @@ export const ProfilePage = () => {
   const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
 
   const cardElements =
-    userState &&
-    coursesFromDB ?
-    userState?.courses.map((course, index) => (
-      <FitnessCard
-        buttonOnClick={() => navigate(`/workouts/${coursesFromDB[course].nameEN}`)}
-        variant="myProfile"
-        key={'card' + index}
-        hasButton={true}
-        image={imagesMap[course]}
-      >
-        {coursesFromDB[course].nameRU}
-      </FitnessCard>
-    )): <div className={style.notFound}>Нет курсов</div>
+    userState && coursesFromDB ? (
+      userState?.courses.map((course, index) => (
+        <FitnessCard
+          buttonOnClick={() => navigate(`/workouts/${coursesFromDB[course].nameEN}`)}
+          variant="myProfile"
+          key={'card' + index}
+          hasButton={true}
+          image={imagesMap[course]}
+        >
+          {coursesFromDB[course].nameRU}
+        </FitnessCard>
+      ))
+    ) : (
+      <div className={style.notFound}>Нет курсов</div>
+    )
 
   const closeFunc = () => {
     setPopUp(null)
