@@ -1,4 +1,5 @@
 // Import the functions you need from the SDKs you need
+import type { User } from 'firebase/auth'
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -10,10 +11,6 @@ import {
 import { initializeApp } from 'firebase/app'
 import { DEFAULT_USER_STATE } from 'const'
 import { child, get, getDatabase, ref, update } from 'firebase/database'
-
-import type { IUserState } from 'types'
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -30,12 +27,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 type EmailPassword = Record<string, string>
 
-//
-// !!!! Константу нужно потом перенести
-//
+// Initialize Cloud Firestore and get a reference to the service
+const db = ref(getDatabase(app))
+const user = getAuth(app).currentUser
 
 export const initUserState = async () => {
-  const user = getAuth(app).currentUser
   if (user) {
     const { uid } = user
     const db = ref(getDatabase(app))
@@ -65,14 +61,10 @@ export const logoutUser = async () => {
 }
 
 export const updateLogin = async ({ email }: EmailPassword) => {
-  const user = getAuth(app).currentUser
-
   if (user) return updateEmail(user, email)
 }
 
 export const updateUserPassword = async ({ password }: EmailPassword) => {
-  const user = getAuth(app).currentUser
-
   if (user) return updatePassword(user, password)
 }
 
@@ -85,9 +77,6 @@ export const updateUserProgress = async ({
   workoutId: string
   progressArray: number[]
 }) => {
-  const user = getAuth(app).currentUser
-  const db = ref(getDatabase(app))
-
   if (user) {
     const { uid } = user
 
@@ -100,7 +89,6 @@ export const updateUserProgress = async ({
 }
 
 export const getDBChild = async <T>(childPath: string) => {
-  const db = ref(getDatabase(app))
   const requiredChild = await get(child(db, childPath))
 
   if (requiredChild.exists() && requiredChild.val() !== undefined) {
@@ -109,14 +97,19 @@ export const getDBChild = async <T>(childPath: string) => {
   console.warn('Data was not found')
 }
 
-export const getUserState = async () => {
-  const user = getAuth(app).currentUser
+export const getUserState = async <T>() => {
+  const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
 
-  if (user) {
-    const { uid } = user
-    const path = `users/${uid}`
-    return await getDBChild<IUserState>(path)
+  const user: User = getAuth(app).currentUser ?? userFromLS
+
+  const { uid } = user
+  const path = `users/${uid}`
+  const requiredChild = await get(child(db, path))
+
+  if (requiredChild.exists() && requiredChild.val() !== undefined) {
+    return requiredChild.val() as T
   }
+  console.warn('Data was not found')
 }
 
 // const baseUrl = 'https://sky-fitness-pro-2f260-default-rtdb.asia-southeast1.firebasedatabase.app/'
