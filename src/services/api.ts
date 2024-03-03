@@ -32,6 +32,7 @@ const db = ref(getDatabase(app))
 const user = getAuth(app).currentUser
 
 export const initUserState = async () => {
+  const user = getAuth(app).currentUser
   if (user) {
     const { uid } = user
     const db = ref(getDatabase(app))

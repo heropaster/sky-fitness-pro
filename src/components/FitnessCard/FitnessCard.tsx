@@ -1,37 +1,79 @@
 import { Button } from 'components'
-import type { FC, PropsWithChildren } from 'react'
+import { useState, type FC, type PropsWithChildren } from 'react'
 import styles from './FitnessCard.module.scss'
+import type { IWorkouts } from 'types'
+import { useNavigate } from 'react-router-dom'
 
 interface FitnessCardProps {
   variant?: 'main' | 'myProfile'
   image?: string
-  hasButton?: boolean
   onClick?: () => void
-  buttonOnClick?: () => void
+  userWorkouts?: { [index: string]: [boolean, ...number[]] }
+  workoutsFromDB?: IWorkouts
 }
 
 export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   children,
   image,
-  hasButton = false,
   variant = 'main',
   onClick,
-  buttonOnClick,
-}) => (
-  <div
-    onClick={onClick}
-    style={{ background: `url(${image})` }}
-    className={`${styles.card} ${variant === 'myProfile' && styles.myProfile}`}
-  >
-    {children}
+  userWorkouts,
+  workoutsFromDB,
+}) => {
+  const [isFlipped, setIsFlipped] = useState(false)
+  const navigate = useNavigate()
 
-    {/* Здесь можно было бы использовать проверку variant === 'myProfile', но пока оставлю так
-    возможно где-то придется разграничивать логику наличия кнопки и варианта отображения */}
+  const resultingOnClick =
+    variant === 'myProfile'
+      ? () => {
+          setIsFlipped(!isFlipped)
+        }
+      : onClick
 
-    {hasButton && (
-      <Button variant="green" width={150} onClick={buttonOnClick}>
-        Перейти →
-      </Button>
-    )}
-  </div>
-)
+      // Здесь можно вынести li-шку в отдельный компонент, но пока заморачиваться не захотел
+  const workoutElements =
+    userWorkouts &&
+    workoutsFromDB &&
+    Object.keys(userWorkouts).map((workout, index) => {
+      const [heading, ...description] = workoutsFromDB[workout].name.split('/')
+      const isDone = userWorkouts[workout][0]
+
+      return (
+        <li
+          onClick={() => navigate(`/workouts/${workout}`)}
+          className={`${styles.workoutItem} ${isDone && styles.done}`}
+          key={'workout' + index}
+        >
+          <h3 className={styles.workoutTitle}>{heading}</h3>
+          <p className={styles.description}>{description.join('/')}</p>
+        </li>
+      )
+    })
+
+  return (
+    <div className={`${styles.box} `}>
+      <div
+        onClick={resultingOnClick}
+        className={`${styles.back} ${isFlipped && styles.flip_back} ${variant === 'myProfile' && styles.myProfile}`}
+      >
+        <div className={styles.workoutsBox}>
+          {variant === 'myProfile' && <ul className={styles.list}>{workoutElements}</ul>}
+        </div>
+      </div>
+
+      <div
+        onClick={resultingOnClick}
+        style={{ background: `url(${image})` }}
+        className={`${styles.card} ${isFlipped && styles.flip_face} ${variant === 'myProfile' && styles.myProfile}`}
+      >
+        {children}
+
+        {variant === 'myProfile' && (
+          <Button variant="green" width={150}>
+            Перейти →
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}

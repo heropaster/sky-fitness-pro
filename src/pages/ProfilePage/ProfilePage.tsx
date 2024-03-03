@@ -1,43 +1,46 @@
 import { Header, Button, FitnessCard, ProfileEdit } from 'components'
 import { useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useStore } from 'store/AuthStore'
-import { useAllCoursesQuery, useUserStateQuery } from 'hooks'
+import { useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
 import style from './ProfilePage.module.scss'
 import { imagesMap } from 'consts'
 
 export const ProfilePage = () => {
-  const navigate = useNavigate()
   const user = useStore((store) => store.user)
   const login = user?.email
   const password = user?.password
 
   const { data: userState } = useUserStateQuery()
   const { data: coursesFromDB } = useAllCoursesQuery()
+  const { data: workoutsFromDB } = useAllWorkoutsQuery()
 
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
   const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
 
-  const cardElements =
-    userState && coursesFromDB ? (
-      userState?.courses.map((course, index) => (
-        <FitnessCard
-          buttonOnClick={() => navigate(`/workouts/${coursesFromDB[course].nameEN}`)}
-          variant="myProfile"
-          key={'card' + index}
-          hasButton={true}
-          image={imagesMap[course]}
-        >
-          {coursesFromDB[course].nameRU}
-        </FitnessCard>
-      ))
-    ) : (
-      <div className={style.notFound}>Нет курсов</div>
-    )
-
   const closeFunc = () => {
     setPopUp(null)
   }
+
+  const cardElements =
+    userState && coursesFromDB && workoutsFromDB ? (
+      userState?.courses.map((course, index) => {
+        const userWorkouts = userState.progress[course]
+
+        return (
+          <FitnessCard
+            variant="myProfile"
+            key={'card' + index}
+            image={imagesMap[course]}
+            userWorkouts={userWorkouts}
+            workoutsFromDB={workoutsFromDB}
+          >
+            {coursesFromDB[course].nameRU}
+          </FitnessCard>
+        )
+      })
+    ) : (
+      <div className={style.notFound}>Нет курсов</div>
+    )
 
   return (
     <div className={style.container}>
