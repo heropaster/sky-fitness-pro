@@ -6,6 +6,12 @@ export interface IUserState {
   _id?: string
 }
 
+export interface IUserState {
+  courses: string[]
+  progress: { [index: string]: { [index: string]: [boolean, ...number[]] } }
+  _id?: string
+}
+
 export interface ICustomUser extends User {
   password: string
 }
