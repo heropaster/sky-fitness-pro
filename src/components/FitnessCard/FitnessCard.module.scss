@@ -102,6 +102,11 @@
   text-align: center;
   width: 280px;
   border: 1px solid black;
+
+  &:hover {
+    color: #0093fc;
+    border-color: #0093fc;
+  }
 }
 
 .workoutTitle {
