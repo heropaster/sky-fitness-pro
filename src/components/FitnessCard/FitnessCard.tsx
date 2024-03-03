@@ -30,13 +30,16 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
         }
       : onClick
 
-      // Здесь можно вынести li-шку в отдельный компонент, но пока заморачиваться не захотел
+  // Здесь можно вынести li-шку в отдельный компонент, но пока заморачиваться не захотел
   const workoutElements =
     userWorkouts &&
     workoutsFromDB &&
     Object.keys(userWorkouts).map((workout, index) => {
       const [heading, ...description] = workoutsFromDB[workout].name.split('/')
       const isDone = userWorkouts[workout][0]
+      // Чтобы посмотреть как выглядят выполненные, можно закоментировать строку выше
+      // И раскомментировать строку ниже
+      // const isDone = true;
 
       return (
         <li
