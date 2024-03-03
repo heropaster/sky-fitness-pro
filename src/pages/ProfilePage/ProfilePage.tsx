@@ -33,6 +33,7 @@ export const ProfilePage = () => {
             image={imagesMap[course]}
             userWorkouts={userWorkouts}
             workoutsFromDB={workoutsFromDB}
+            course={course}
           >
             {coursesFromDB[course].nameRU}
           </FitnessCard>

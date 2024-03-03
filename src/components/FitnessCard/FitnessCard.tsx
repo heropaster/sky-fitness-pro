@@ -10,6 +10,7 @@ interface FitnessCardProps {
   onClick?: () => void
   userWorkouts?: { [index: string]: [boolean, ...number[]] }
   workoutsFromDB?: IWorkouts
+  course: string
 }
 
 export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
@@ -19,6 +20,7 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   onClick,
   userWorkouts,
   workoutsFromDB,
+  course,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false)
   const navigate = useNavigate()
@@ -43,7 +45,7 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
 
       return (
         <li
-          onClick={() => navigate(`/workouts/${workout}`)}
+          onClick={() => navigate(`/workouts/${course}/${workout}`)}
           className={`${styles.workoutItem} ${isDone && styles.done}`}
           key={'workout' + index}
         >
