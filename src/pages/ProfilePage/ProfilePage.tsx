@@ -12,11 +12,8 @@ export const ProfilePage = () => {
   const login = user?.email
   const password = user?.password
 
-  const userStateQuery = useUserStateQuery()
-  const userState = userStateQuery.data
-
-  const coursesQuery = useAllCoursesQuery()
-  const coursesFromDB = coursesQuery.data
+  const { data: userState } = useUserStateQuery()
+  const { data: coursesFromDB } = useAllCoursesQuery()
 
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
   const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
