@@ -18,12 +18,18 @@ export const ProfilePage = () => {
   const [authPopUp, setAuthPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
   const [isDropdownOpened, setIsDropdownOpened] = useState(false)
   const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
-  const [editPopUpCourse, setEditPopUpCourse] = useState('')
+  const [editPopUpCourse, setEditPopUpCourse] = useState<string[]>([''])
+
+  // const progressTemplate = {[editPopUpCourse]: }
 
   const closeFunc = () => {
     setAuthPopUp(null)
+    setCardEditPopUp(null)
   }
 
+
+
+  // Элементы карточек с курсами
   const cardElements =
     userState && coursesFromDB && workoutsFromDB ? (
       userState?.courses.map((course, index) => {
@@ -36,7 +42,9 @@ export const ProfilePage = () => {
             image={imagesMap[course]}
             userWorkouts={userWorkouts}
             workoutsFromDB={workoutsFromDB}
-            course={course}
+            course={[course, coursesFromDB[course].nameRU]}
+            setCardEditPopUp={setCardEditPopUp}
+            setEditPopUpCourse={setEditPopUpCourse}
           >
             {coursesFromDB[course].nameRU}
           </FitnessCard>
@@ -49,21 +57,26 @@ export const ProfilePage = () => {
   const noAddedCourses =
     userState && coursesFromDB && Object.keys(coursesFromDB).filter((course) => !userState.courses.includes(course))
 
-  const noAddedCourseNames = coursesFromDB && noAddedCourses?.map((course) => coursesFromDB[course].nameRU)
+  const noAddedCourseNames = coursesFromDB && noAddedCourses?.map((course) => [course, coursesFromDB[course].nameRU])
 
+  // Элементы выпадающего меню на добавить курс
   const dropdownElements = noAddedCourseNames ? (
-    noAddedCourseNames.map((course, index) => (
-      <div
-        onClick={() => {
-          setEditPopUpCourse(course)
-          setCardEditPopUp('add')
-        }}
-        className={style.dropdownItem}
-        key={'noAdded' + index}
-      >
-        {course}
-      </div>
-    ))
+    noAddedCourseNames.map((course, index) => {
+      const agreeFunc = ''
+
+      return (
+        <div
+          onClick={() => {
+            setEditPopUpCourse(course)
+            setCardEditPopUp('add')
+          }}
+          className={style.dropdownItem}
+          key={'noAdded' + index}
+        >
+          {course[1]}
+        </div>
+      )
+    })
   ) : (
     <div>Все курсы уже добавлены</div>
   )
@@ -72,13 +85,17 @@ export const ProfilePage = () => {
     <div className={style.container}>
       {authPopUp === 'loginEdit' && <ProfileEdit closeFunc={closeFunc} />}
       {authPopUp === 'passEdit' && <ProfileEdit variant="password" closeFunc={closeFunc} />}
-      <YesNoPopUp variant={cardEditPopUp} course={editPopUpCourse} closeFunc={() => setCardEditPopUp(null)} />
+      <YesNoPopUp variant={cardEditPopUp} course={editPopUpCourse} closeFunc={closeFunc} />
+
       <div className={style.content}>
         <Header />
+
         <h1 className={style.title}>Мой профиль</h1>
+
         <p className={style.text}>Логин: &nbsp;&nbsp;&nbsp; {login}</p>
         <p className={`${style.text} ${style.password}`}>
-          <span>Пароль: &nbsp;&nbsp;&nbsp; {isPassVisible ? password : '********'} </span>{' '}
+          <span>Пароль: &nbsp;&nbsp;&nbsp; {isPassVisible ? password : '********'} </span>
+
           <Button
             onClick={(): void => {
               setIsPassVisible(!isPassVisible)
@@ -90,20 +107,24 @@ export const ProfilePage = () => {
             {isPassVisible ? 'Скрыть' : 'Показать'}
           </Button>
         </p>
+
         <div className={style.editBox}>
           <Button fontSize={18} onClick={() => setAuthPopUp('loginEdit')}>
             Редактировать логин
           </Button>
+
           <Button fontSize={18} onClick={() => setAuthPopUp('passEdit')}>
             Редактировать пароль
           </Button>
         </div>
+
         <h2 className={style.title}>
-          Мои курсы&nbsp;&nbsp;&nbsp;&nbsp;{' '}
+          Мои курсы&nbsp;&nbsp;&nbsp;&nbsp;
           <div className={style.btnContainer}>
             <Button onClick={() => setIsDropdownOpened(!isDropdownOpened)} width={170} variant="transparent">
               Добавить +
             </Button>
+
             <div className={`${style.dropdownCourses} ${isDropdownOpened && style.dropdown_open}`}>
               {dropdownElements}
             </div>

@@ -5,7 +5,7 @@ import style from './YesNoPopUp.module.scss'
 
 interface YesNoPopUpProps {
   variant?: 'delete' | 'add' | null
-  course: string
+  course: string[]
   closeFunc?: () => void
   agreeFunc?: () => void
 }
@@ -23,7 +23,11 @@ export const YesNoPopUp: FC<PropsWithChildren & YesNoPopUpProps> = ({
       <div onClick={(e: MouseEvent) => e.stopPropagation()} className={style.content}>
         <Logo />
 
-        <p className={style.text}>Добавить курс {course} в ваш профиль?</p>
+        <p className={style.text}>
+          {variant === 'add'
+            ? `Добавить курс ${course[1]} в ваш профиль?`
+            : `Внимание! После удаления курса ${course[1]} весь прогресс по нему будет безвозвратно утерян. Вы действительно желаете удалить курс из вашего профиля?`}
+        </p>
 
         <div className={style.buttons}>
           <Button onClick={agreeFunc} width={100} fontSize={18}>

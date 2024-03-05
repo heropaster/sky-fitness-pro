@@ -3,6 +3,7 @@ import { useState, type FC, type PropsWithChildren } from 'react'
 import styles from './FitnessCard.module.scss'
 import type { IWorkouts } from 'types'
 import { useNavigate } from 'react-router-dom'
+import type { Dispatch, SetStateAction } from 'react'
 
 interface FitnessCardProps {
   variant?: 'main' | 'myProfile'
@@ -10,7 +11,9 @@ interface FitnessCardProps {
   onClick?: () => void
   userWorkouts?: { [index: string]: [boolean, ...number[]] }
   workoutsFromDB?: IWorkouts
-  course: string
+  course: string[]
+  setCardEditPopUp: Dispatch<SetStateAction<'delete' | 'add' | null>>
+  setEditPopUpCourse: Dispatch<SetStateAction<string[]>>
 }
 
 export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
@@ -21,6 +24,8 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   userWorkouts,
   workoutsFromDB,
   course,
+  setCardEditPopUp,
+  setEditPopUpCourse
 }) => {
   const [isFlipped, setIsFlipped] = useState(false)
   const navigate = useNavigate()
@@ -42,7 +47,7 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
 
       return (
         <li
-          onClick={() => navigate(`/workouts/${course}/${workout}`)}
+          onClick={() => navigate(`/workouts/${course[0]}/${workout}`)}
           className={`${styles.workoutItem} ${isDone && styles.done}`}
           key={'workout' + index}
         >
@@ -76,7 +81,14 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
           </Button>
         )}
       </div>
-      <Button variant="red" width={145}>
+      <Button
+        onClick={() => {
+          setCardEditPopUp('delete')
+          setEditPopUpCourse(course)
+        }}
+        variant="red"
+        width={145}
+      >
         Удалить
       </Button>
     </div>
