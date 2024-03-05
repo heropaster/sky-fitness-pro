@@ -6,4 +6,5 @@ export const useAllCoursesQuery = () =>
   useQuery({
     queryFn: () => getDBChild<ICourses>('courses'),
     queryKey: ['courses', 'all'],
+    staleTime: 1000 * 60 * 60 * 2,
   })
