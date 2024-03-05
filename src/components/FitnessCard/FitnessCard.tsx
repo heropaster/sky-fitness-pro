@@ -39,9 +39,6 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
     Object.keys(userWorkouts).map((workout, index) => {
       const [heading, ...description] = workoutsFromDB[workout].name.split('/')
       const isDone = userWorkouts[workout][0]
-      // Чтобы посмотреть как выглядят выполненные, можно закоментировать строку выше
-      // И раскомментировать строку ниже
-      // const isDone = true;
 
       return (
         <li
@@ -79,6 +76,9 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
           </Button>
         )}
       </div>
+      <Button variant="red" width={145}>
+        Удалить
+      </Button>
     </div>
   )
 }

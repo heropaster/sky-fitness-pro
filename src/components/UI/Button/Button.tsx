@@ -2,7 +2,7 @@ import styles from './Button.module.scss'
 import type { FC, ButtonHTMLAttributes } from 'react'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'base' | 'green' | 'transparent'
+  variant?: 'base' | 'green' | 'transparent' | 'red'
   width?: number
   fontSize?: number
 }

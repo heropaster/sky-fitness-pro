@@ -1,14 +1,17 @@
 .box {
   position: relative;
   width: 360px;
-  height: 480px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
   cursor: pointer;
   border-radius: 30px;
 }
 
 .card {
-  width: 100%;
-  height: 100%;
+  width: 360px;
+  height: 480px;
   padding: 30px;
   display: flex;
   flex-direction: column;
@@ -33,8 +36,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  width: 360px;
+  height: 480px;
   padding: 25px 25px 40px 25px;
   border-radius: 30px;
 

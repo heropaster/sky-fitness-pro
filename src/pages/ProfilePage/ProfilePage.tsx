@@ -1,4 +1,4 @@
-import { Header, Button, FitnessCard, ProfileEdit } from 'components'
+import { Header, Button, FitnessCard, ProfileEdit, YesNoPopUp } from 'components'
 import { useState } from 'react'
 import { useStore } from 'store/AuthStore'
 import { useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
@@ -15,10 +15,13 @@ export const ProfilePage = () => {
   const { data: workoutsFromDB } = useAllWorkoutsQuery()
 
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
-  const [popUp, setPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
+  const [authPopUp, setAuthPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
+  const [isDropdownOpened, setIsDropdownOpened] = useState(false)
+  const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
+  const [editPopUpCourse, setEditPopUpCourse] = useState('')
 
   const closeFunc = () => {
-    setPopUp(null)
+    setAuthPopUp(null)
   }
 
   const cardElements =
@@ -43,11 +46,33 @@ export const ProfilePage = () => {
       <div className={style.notFound}>Нет курсов</div>
     )
 
+  const noAddedCourses =
+    userState && coursesFromDB && Object.keys(coursesFromDB).filter((course) => !userState.courses.includes(course))
+
+  const noAddedCourseNames = coursesFromDB && noAddedCourses?.map((course) => coursesFromDB[course].nameRU)
+
+  const dropdownElements = noAddedCourseNames ? (
+    noAddedCourseNames.map((course, index) => (
+      <div
+        onClick={() => {
+          setEditPopUpCourse(course)
+          setCardEditPopUp('add')
+        }}
+        className={style.dropdownItem}
+        key={'noAdded' + index}
+      >
+        {course}
+      </div>
+    ))
+  ) : (
+    <div>Все курсы уже добавлены</div>
+  )
+
   return (
     <div className={style.container}>
-      {popUp === 'loginEdit' && <ProfileEdit closeFunc={closeFunc} />}
-      {popUp === 'passEdit' && <ProfileEdit variant="password" closeFunc={closeFunc} />}
-
+      {authPopUp === 'loginEdit' && <ProfileEdit closeFunc={closeFunc} />}
+      {authPopUp === 'passEdit' && <ProfileEdit variant="password" closeFunc={closeFunc} />}
+      <YesNoPopUp variant={cardEditPopUp} course={editPopUpCourse} closeFunc={() => setCardEditPopUp(null)} />
       <div className={style.content}>
         <Header />
         <h1 className={style.title}>Мой профиль</h1>
@@ -66,14 +91,24 @@ export const ProfilePage = () => {
           </Button>
         </p>
         <div className={style.editBox}>
-          <Button fontSize={18} onClick={() => setPopUp('loginEdit')}>
+          <Button fontSize={18} onClick={() => setAuthPopUp('loginEdit')}>
             Редактировать логин
           </Button>
-          <Button fontSize={18} onClick={() => setPopUp('passEdit')}>
+          <Button fontSize={18} onClick={() => setAuthPopUp('passEdit')}>
             Редактировать пароль
           </Button>
         </div>
-        <h2 className={style.title}>Мои курсы</h2>
+        <h2 className={style.title}>
+          Мои курсы&nbsp;&nbsp;&nbsp;&nbsp;{' '}
+          <div className={style.btnContainer}>
+            <Button onClick={() => setIsDropdownOpened(!isDropdownOpened)} width={170} variant="transparent">
+              Добавить +
+            </Button>
+            <div className={`${style.dropdownCourses} ${isDropdownOpened && style.dropdown_open}`}>
+              {dropdownElements}
+            </div>
+          </div>
+        </h2>
 
         <div className={style.cards}>{cardElements}</div>
       </div>
