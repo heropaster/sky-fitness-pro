@@ -4,6 +4,8 @@ import { useStore } from 'store/AuthStore'
 import { useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
 import style from './ProfilePage.module.scss'
 import { imagesMap } from 'consts'
+import { getProgressTemplate } from 'helpers/helpers'
+
 
 export const ProfilePage = () => {
   const user = useStore((store) => store.user)
@@ -20,14 +22,15 @@ export const ProfilePage = () => {
   const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
   const [editPopUpCourse, setEditPopUpCourse] = useState<string[]>([''])
 
-  // const progressTemplate = {[editPopUpCourse]: }
+  // console.log(getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB))
+
 
   const closeFunc = () => {
     setAuthPopUp(null)
     setCardEditPopUp(null)
   }
 
-
+  const agreeFunc = cardEditPopUp === 'delete' ? removeCourse : addCourse
 
   // Элементы карточек с курсами
   const cardElements =
@@ -61,22 +64,18 @@ export const ProfilePage = () => {
 
   // Элементы выпадающего меню на добавить курс
   const dropdownElements = noAddedCourseNames ? (
-    noAddedCourseNames.map((course, index) => {
-      const agreeFunc = ''
-
-      return (
-        <div
-          onClick={() => {
-            setEditPopUpCourse(course)
-            setCardEditPopUp('add')
-          }}
-          className={style.dropdownItem}
-          key={'noAdded' + index}
-        >
-          {course[1]}
-        </div>
-      )
-    })
+    noAddedCourseNames.map((course, index) => (
+      <div
+        onClick={() => {
+          setEditPopUpCourse(course)
+          setCardEditPopUp('add')
+        }}
+        className={style.dropdownItem}
+        key={'noAdded' + index}
+      >
+        {course[1]}
+      </div>
+    ))
   ) : (
     <div>Все курсы уже добавлены</div>
   )
