@@ -13,6 +13,7 @@ import { imagesMap } from 'consts'
 import { getProgressTemplate } from 'helpers/helpers'
 import type { IUserState } from 'types'
 
+// eslint-disable-next-line sonarjs/cognitive-complexity
 export const ProfilePage = () => {
   const user = useStore((store) => store.user)
   const login = user?.email
@@ -27,33 +28,35 @@ export const ProfilePage = () => {
   const [isDropdownOpened, setIsDropdownOpened] = useState(false)
   const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
   const [editPopUpCourse, setEditPopUpCourse] = useState<string[]>([''])
+  const doCoursesExist = userState && userState?.courses?.length > 0
 
   // Элементы карточек с курсами
-  const cardElements = coursesFromDB ? (
-    userState?.courses.map((course, index) => {
-      const userWorkouts = userState.progress[course]
+  const cardElements =
+    doCoursesExist && coursesFromDB ? (
+      userState?.courses.map((course, index) => {
+        const userWorkouts = userState.progress[course]
 
-      return (
-        <FitnessCard
-          variant="myProfile"
-          key={'card' + index}
-          image={imagesMap[course]}
-          userWorkouts={userWorkouts}
-          workoutsFromDB={workoutsFromDB}
-          course={[course, coursesFromDB[course].nameRU]}
-          setCardEditPopUp={setCardEditPopUp}
-          setEditPopUpCourse={setEditPopUpCourse}
-        >
-          {coursesFromDB[course].nameRU}
-        </FitnessCard>
-      )
-    })
-  ) : (
-    <div className={style.notFound}>Нет курсов</div>
-  )
+        return (
+          <FitnessCard
+            variant="myProfile"
+            key={'card' + index}
+            image={imagesMap[course]}
+            userWorkouts={userWorkouts}
+            workoutsFromDB={workoutsFromDB}
+            course={[course, coursesFromDB[course].nameRU]}
+            setCardEditPopUp={setCardEditPopUp}
+            setEditPopUpCourse={setEditPopUpCourse}
+          >
+            {coursesFromDB[course].nameRU}
+          </FitnessCard>
+        )
+      })
+    ) : (
+      <div className={style.notFound}>Нет курсов</div>
+    )
 
   const noAddedCourseNames =
-    userState &&
+    doCoursesExist &&
     coursesFromDB &&
     Object.keys(coursesFromDB)
       .filter((course) => !userState.courses.includes(course))
@@ -83,8 +86,9 @@ export const ProfilePage = () => {
       ...getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB),
       ...userState?.progress,
     }
-  const resultCourses = userState && [...userState.courses, editPopUpCourse[0]]
-  const resultCoursesForDel = userState && userState.courses.filter((el) => el !== editPopUpCourse[0])
+
+  const resultCourses = doCoursesExist && [...(userState.courses ?? []), editPopUpCourse[0]]
+  const resultCoursesForDel = doCoursesExist && userState.courses.filter((el) => el !== editPopUpCourse[0])
   const { mutate: addCourse } = useAddCourseQuery(resultCourses as string[], resultProgress as IUserState['progress'])
   const { mutate: deleteCourse } = useDeleteCourseQuery(
     resultCoursesForDel as string[],
