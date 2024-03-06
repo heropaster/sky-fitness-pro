@@ -54,8 +54,6 @@ export function AuthPage() {
         try {
           const response = await loginUser({ email: login as string, password: password as string })
 
-          console.log(response, 'Это ответ на логин')
-
           setUser(response)
           navigate('/profile')
           return response

@@ -11,7 +11,7 @@ interface FitnessCardProps {
   onClick?: () => void
   userWorkouts?: { [index: string]: [boolean, ...number[]] }
   workoutsFromDB?: IWorkouts
-  course: string[]
+  course?: string[]
   setCardEditPopUp: Dispatch<SetStateAction<'delete' | 'add' | null>>
   setEditPopUpCourse: Dispatch<SetStateAction<string[]>>
 }
@@ -23,7 +23,7 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   onClick,
   userWorkouts,
   workoutsFromDB,
-  course,
+  course = ['yoga'],
   setCardEditPopUp,
   setEditPopUpCourse,
 }) => {
