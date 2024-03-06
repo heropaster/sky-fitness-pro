@@ -3,7 +3,7 @@ import type { IUserState } from 'types'
 export { imagesMap } from './imagesMap'
 
 export const DEFAULT_USER_STATE: IUserState = {
-  courses: ['bodyflex', 'stepairobic', 'yoga'],
+  courses: [],
   progress: {
     bodyflex: { xlpkqy: [false, 0, 0, 0], '17oz5f': [false, 0, 0, 0], pyvaec: [false, 0, 0, 0] },
     stepairobic: {
