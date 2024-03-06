@@ -1,0 +1,95 @@
+.courseContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.modalContainer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+}
+
+.content {
+  width: 1160px;
+}
+
+.title {
+  font-size: 48px;
+  font-weight: 400;
+  line-height: 56px;
+  margin-top: 66px;
+  margin-bottom: 40px;
+}
+
+.heading {
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.video {
+  margin-top: 40px;
+  width: 1160px;
+  height: 639px;
+  margin-bottom: 75px;
+}
+
+.description {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 94px;
+}
+
+.tasksList {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  width: 420px;
+  gap: 5px;
+
+  &Item {
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 32px;
+    margin-left: 30px;
+  }
+}
+
+.progress {
+  width: 638px;
+  background-color: #f2f2f2;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 36px;
+  padding-bottom: 32px;
+
+  &Items {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  &Item {
+    width: 539px;
+    display: flex;
+    justify-content: space-between;
+
+    &Text {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 32px;
+      width: 227px;
+    }
+  }
+}

@@ -1,0 +1,62 @@
+.container {
+  height: 36px;
+  width: 278px;
+  box-sizing: border-box;
+  border-radius: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.filler {
+  height: 100%;
+  border-top-left-radius: inherit;
+  border-bottom-left-radius: inherit;
+  position: relative;
+}
+
+.leftProgressValue {
+  position: absolute;
+  right: 20px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.rightProgressValue {
+  position: absolute;
+  top: 0;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: center;
+  color: #000;
+}
+
+.container-blue {
+  border: 2px solid #565eef;
+}
+
+.filler-blue {
+  background-color: #565eef;
+  color: #565eef;
+}
+
+.container-orange {
+  border: 2px solid #ff6d00;
+}
+
+.filler-orange {
+  background-color: #ff6d00;
+  color: #ff6d00;
+}
+
+.container-purple {
+  border: 2px solid #9a48f1;
+}
+
+.filler-purple {
+  background-color: #9a48f1;
+  color: #9a48f1;
+}

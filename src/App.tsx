@@ -1,10 +1,9 @@
-import { Button } from 'components/UI/Button/Button.tsx'
-import { Title } from 'components/UI/Title/Title.tsx'
+import { Providers } from 'providers/Providers.tsx'
+import { AppRoutes } from 'routes/routes'
 import './App.scss'
 
 export const App = () => (
-  <div>
-    <Title color={'red'}>Заголовок</Title>
-    <Button>Нажми</Button>
-  </div>
+  <Providers>
+    <AppRoutes />
+  </Providers>
 )

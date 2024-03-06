@@ -1,0 +1,54 @@
+.container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #271a58;
+}
+
+.content {
+  width: 1160px;
+  margin: 0 auto;
+}
+
+.topTitle {
+  margin-top: 35px;
+  font-size: 20px;
+  line-height: 23px;
+  font-weight: normal;
+  letter-spacing: -0.05px;
+  color: #ffffff;
+  opacity: 0.5;
+}
+
+.leadGroup {
+  margin-top: 17px;
+  display: flex;
+  position: relative;
+}
+
+.leadText {
+  font-size: 60px;
+  line-height: 54.9px;
+  color: #f4f4ff;
+}
+
+.sticker {
+  position: absolute;
+  top: -32px;
+  right: -75px;
+}
+
+.fitnessCards {
+  margin-top: 52px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+.footer {
+  margin-top: 34px;
+  margin-bottom: 60px;
+  text-align: center;
+}
+

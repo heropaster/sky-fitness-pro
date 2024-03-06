@@ -1,0 +1,21 @@
+.container {
+  position: relative;
+  padding: 46px 52px;
+  background-color: #F9EBFFFF;
+  border-radius: 30px;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.text {
+  font-size: 32px;
+  line-height: 40px;
+  margin-bottom: 24px;
+}
+
+.image {
+  position: absolute;
+  right: -40px;
+  top: -15px
+}

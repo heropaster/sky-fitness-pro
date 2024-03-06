@@ -1,0 +1,54 @@
+.wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(220, 220, 220);
+}
+
+.AuthForm {
+  position: relative;
+  background-color: #fff;
+  border: 1px solid rgba(80, 78, 78, 0.4);
+  padding: 10px;
+  border-radius: 5%;
+  width: 23rem;
+  height: 27rem;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inputs {
+  width: 80%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.buttonBlock {
+  width: 100%;
+  display: flex;
+  flex-flow: column nowrap;
+  gap: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.errorInput {
+  font-style: italic;
+  color: red;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  position: absolute;
+  top: 93%;
+  left: 0%;
+  z-index: 50;
+}

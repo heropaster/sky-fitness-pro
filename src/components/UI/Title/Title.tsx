@@ -1,7 +1,7 @@
 import type { FC, PropsWithChildren } from 'react'
 
 interface TitleProps {
-  color: string
+  color?: string
 }
 
 export const Title: FC<PropsWithChildren & TitleProps> = ({ children, color }) => (

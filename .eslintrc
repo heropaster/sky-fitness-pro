@@ -2,7 +2,7 @@
   "env": {
     "browser": true,
     "es2023": true,
-    "node": true
+    "node": true,
   },
   "extends": [
     "eslint:recommended",
@@ -11,69 +11,53 @@
     "plugin:react-hooks/recommended",
     "plugin:sonarjs/recommended",
     "plugin:unicorn/recommended",
-    "prettier"
+    "prettier",
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaFeatures": {
-      "jsx": true
+      "jsx": true,
     },
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
   },
-  "plugins": [
-    "react",
-    "react-hooks",
-    "@typescript-eslint",
-    "sonarjs",
-    "unicorn",
-    "prettier"
-  ],
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "sonarjs", "unicorn", "prettier"],
   "rules": {
     "@typescript-eslint/consistent-type-imports": [
       "error",
       {
-        "prefer": "type-imports"
-      }
+        "prefer": "type-imports",
+      },
     ],
-    "arrow-body-style": [
-      "error",
-      "as-needed"
-    ],
+    "arrow-body-style": ["error", "as-needed"],
     "react/self-closing-comp": [
       "error",
       {
         "component": true,
-        "html": true
-      }
+        "html": true,
+      },
     ],
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
-    "@typescript-eslint/no-unused-vars": [
-      "warn"
-    ],
+    "@typescript-eslint/no-unused-vars": ["warn"],
     "react/react-in-jsx-scope": "off",
     "unicorn/prevent-abbreviations": "off",
     "unicorn/no-useless-undefined": "off",
     "unicorn/filename-case": "off",
-    "unicorn/no-null": "off"
+    "unicorn/no-null": "off",
   },
   "overrides": [
     {
-      "files": [
-        "*.json"
-      ],
+      "files": ["*.json"],
       "rules": {
-        "sonarjs/no-duplicate-string": "off"
-      }
-    }
+        "sonarjs/no-duplicate-string": "off",
+      },
+    },
   ],
-  "ignorePatterns": [
-    "dist"
-  ],
+  "ignorePatterns": ["dist"],
   "settings": {
     "react": {
-      "version": "detect"
-    }
-  }
+      "version": "detect",
+    },
+  },
 }
