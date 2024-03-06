@@ -16,7 +16,7 @@ export const Main = () => {
   const coursesArray = Object.values(data)
 
   const cardsElements = coursesArray.map((card) => (
-    <FitnessCard key={card._id} image={imagesMap[card._id]} onClick={() => history(`courses/${card.nameEN}`)}>
+   <FitnessCard key={card._id} image={imagesMap[card._id]} onClick={() => history(`courses/${card.nameEN}`)} course={''}>
       {card.nameRU}
     </FitnessCard>
   ))
