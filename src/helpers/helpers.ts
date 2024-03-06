@@ -1,4 +1,4 @@
-import type { ICourses, IWorkouts } from 'types'
+import type { ICourses, IWorkouts, IUserState } from 'types'
 
 export const createValidVideoUrl = (url: string) => {
   const lastPath = url.slice(url.lastIndexOf('/'))
@@ -10,8 +10,8 @@ export const getProgressTemplate = (
   coursesFromDB: ICourses | undefined,
   currentCourse: string[],
   workoutsFromDB: IWorkouts | undefined,
-) => {
-  if (!(coursesFromDB && currentCourse[0] !== '' && workoutsFromDB)) return [false]
+): IUserState["progress"] | undefined => {
+  if (!(coursesFromDB && currentCourse[0] !== '' && workoutsFromDB)) return  
 
   const editCourseWorkoutsArr = coursesFromDB[currentCourse[0]]?.workouts
 

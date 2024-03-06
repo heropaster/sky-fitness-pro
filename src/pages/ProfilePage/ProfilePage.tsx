@@ -1,7 +1,7 @@
 import { Header, Button, FitnessCard, ProfileEdit, YesNoPopUp } from 'components'
 import { useState } from 'react'
 import { useStore } from 'store/AuthStore'
-import { useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
+import { useAddCourseQuery, useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
 import style from './ProfilePage.module.scss'
 import { imagesMap } from 'consts'
 import { getProgressTemplate } from 'helpers/helpers'
@@ -22,7 +22,8 @@ export const ProfilePage = () => {
   const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
   const [editPopUpCourse, setEditPopUpCourse] = useState<string[]>([''])
 
-  // console.log(getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB))
+  const progress = getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB)
+  const {mutate: addCourse} = useAddCourseQuery(editPopUpCourse[0], progress)
 
 
   const closeFunc = () => {

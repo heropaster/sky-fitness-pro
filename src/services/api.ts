@@ -10,7 +10,8 @@ import {
 } from 'firebase/auth'
 import { initializeApp } from 'firebase/app'
 import { DEFAULT_USER_STATE } from 'consts'
-import { child, get, getDatabase, ref, update, remove,  } from 'firebase/database'
+import { child, get, getDatabase, ref, update, remove } from 'firebase/database'
+import type { IUserState } from 'types'
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -25,7 +26,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
-type EmailPassword = Record<string, string>
+type StringObject = Record<string, string>
 
 // Initialize Cloud Firestore and get a reference to the service
 const db = ref(getDatabase(app))
@@ -43,12 +44,12 @@ export const initUserState = async () => {
   }
 }
 
-export const loginUser = async ({ email, password }: EmailPassword) => {
+export const loginUser = async ({ email, password }: StringObject) => {
   const response = await signInWithEmailAndPassword(getAuth(app), email, password)
   return { ...response.user, password }
 }
 
-export const createNewUser = async ({ email, password }: EmailPassword) => {
+export const createNewUser = async ({ email, password }: StringObject) => {
   await createUserWithEmailAndPassword(getAuth(app), email, password)
   const newUser = await loginUser({ email, password })
   initUserState()
@@ -61,12 +62,28 @@ export const logoutUser = async () => {
   return true
 }
 
-export const updateLogin = async ({ email }: EmailPassword) => {
+export const updateLogin = async ({ email }: StringObject) => {
   if (user) return updateEmail(user, email)
 }
 
-export const updateUserPassword = async ({ password }: EmailPassword) => {
+export const updateUserPassword = async ({ password }: StringObject) => {
   if (user) return updatePassword(user, password)
+}
+
+export const addCourse = async ({ course, progressTemp }: { course: string; progressTemp: IUserState['progress'] }) => {
+  const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
+  const user: User = getAuth(app).currentUser ?? userFromLS
+  const { uid } = user
+
+  const pathToUser = `users/${uid}`
+
+  await update(child(db, pathToUser), {
+    courses: [course],
+  })
+
+  await update(child(db, pathToUser), {
+    progress: progressTemp,
+  })
 }
 
 export const updateUserProgress = async ({
