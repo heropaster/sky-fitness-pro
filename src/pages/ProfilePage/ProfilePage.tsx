@@ -55,12 +55,12 @@ export const ProfilePage = () => {
       <div className={style.notFound}>Нет курсов</div>
     )
 
-  const noAddedCourseNames =
-    doCoursesExist &&
-    coursesFromDB &&
-    Object.keys(coursesFromDB)
-      .filter((course) => !userState.courses.includes(course))
-      .map((course) => [course, coursesFromDB[course].nameRU])
+  const noAddedCourseNames = doCoursesExist
+    ? coursesFromDB &&
+      Object.keys(coursesFromDB)
+        .filter((course) => !userState.courses.includes(course))
+        .map((course) => [course, coursesFromDB[course].nameRU])
+    : coursesFromDB && Object.keys(coursesFromDB).map((course) => [course, coursesFromDB[course].nameRU])
 
   // Элементы выпадающего меню на добавить курс
   const dropdownElements: JSX.Element | JSX.Element[] = noAddedCourseNames ? (
@@ -87,7 +87,7 @@ export const ProfilePage = () => {
       ...userState?.progress,
     }
 
-  const resultCourses = doCoursesExist && [...(userState.courses ?? []), editPopUpCourse[0]]
+  const resultCourses = doCoursesExist ? [...(userState.courses ?? []), editPopUpCourse[0]] : [editPopUpCourse[0]]
   const resultCoursesForDel = doCoursesExist && userState.courses.filter((el) => el !== editPopUpCourse[0])
   const { mutate: addCourse } = useAddCourseQuery(resultCourses as string[], resultProgress as IUserState['progress'])
   const { mutate: deleteCourse } = useDeleteCourseQuery(
