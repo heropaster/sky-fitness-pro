@@ -3,10 +3,10 @@ import styles from './NotFoundPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 
 export const NotFoundPage = () => {
-  const history = useNavigate()
+  const navigate = useNavigate()
 
   const onButtonClick = () => {
-    history('/')
+    navigate('/')
   }
 
   return (
