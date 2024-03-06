@@ -108,18 +108,22 @@ export const addCourse = async ({
 }
 
 export const updateUserProgress = async ({
-  courseId,
+  course,
   workoutId,
   progressArray,
 }: {
-  courseId: string
+  course: string
   workoutId: string
-  progressArray: number[]
+  progressArray: [boolean, ...number[]]
 }) => {
+  const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
+
+  const user: User = getAuth(app).currentUser ?? userFromLS
+
   if (user) {
     const { uid } = user
 
-    const exercisePath = `users/${uid}/${courseId}`
+    const exercisePath = `users/${uid}/progress/${course}`
 
     return update(child(db, exercisePath), {
       [workoutId]: progressArray,

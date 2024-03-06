@@ -33,6 +33,7 @@
     "eslint-plugin-sonarjs": "^0.24.0",
     "eslint-plugin-unicorn": "^51.0.1",
     "prettier": "^3.2.5",
+    "react-loader-spinner": "^6.1.6",
     "sass": "^1.70.0",
     "typescript": "^5.2.2",
     "vite": "^5.1.0",
