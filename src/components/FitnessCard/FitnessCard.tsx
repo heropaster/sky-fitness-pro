@@ -74,25 +74,19 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
         className={`${styles.card} ${isFlipped && styles.flip_face} ${variant === 'myProfile' && styles.myProfile}`}
       >
         {children}
-
         {variant === 'myProfile' && (
-          <Button variant="green" width={150}>
-            Перейти →
-          </Button>
+          <div
+            className={styles.delete}
+            onClick={(e) => {
+              e.stopPropagation()
+              setCardEditPopUp('delete')
+              setEditPopUpCourse(course)
+            }}
+          >
+            &times;
+          </div>
         )}
       </div>
-      {variant === 'myProfile' && (
-        <Button
-          onClick={() => {
-            setCardEditPopUp('delete')
-            setEditPopUpCourse(course)
-          }}
-          variant="red"
-          width={145}
-        >
-          Удалить
-        </Button>
-      )}
     </div>
   )
 }

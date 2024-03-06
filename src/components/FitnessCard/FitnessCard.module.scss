@@ -10,6 +10,7 @@
 }
 
 .card {
+  position: relative;
   width: 360px;
   height: 480px;
   padding: 30px;
@@ -23,6 +24,20 @@
   line-height: 39.6px;
   letter-spacing: -0.5px;
   transition: all 1s;
+
+  &:hover > .delete {
+    display: block;
+  }
+}
+
+.delete {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  color: rgba(255, 0, 0, 0.558);
+  font-weight: 100;
+  font-size: 80px;
+  display: none;
 }
 
 .myProfile {
