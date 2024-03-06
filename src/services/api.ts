@@ -31,6 +31,7 @@ type StringObject = Record<string, string>
 // Initialize Cloud Firestore and get a reference to the service
 const db = ref(getDatabase(app))
 const user = getAuth(app).currentUser
+const getUserFromLS = (): User => JSON.parse(localStorage.getItem('user-storage') as string).state.user
 
 export const initUserState = async () => {
   const user = getAuth(app).currentUser
@@ -70,6 +71,19 @@ export const updateUserPassword = async ({ password }: StringObject) => {
   if (user) return updatePassword(user, password)
 }
 
+export const deleteCourse = async ({ course, courseIndex }: { course: string; courseIndex: number }) => {
+  const userFromLS: User = getUserFromLS()
+
+  const user: User = getAuth(app).currentUser ?? userFromLS
+  const { uid } = user
+
+  const pathToCourse = `users/${uid}/courses/${courseIndex}`
+  const pathToProgress = `users/${uid}/progress/${course}`
+
+  await remove(child(db, pathToCourse))
+  await remove(child(db, pathToProgress))
+}
+
 export const addCourse = async ({
   course,
   progressTemp,
@@ -77,7 +91,7 @@ export const addCourse = async ({
   course: string[]
   progressTemp: IUserState['progress']
 }) => {
-  const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
+  const userFromLS: User = getUserFromLS()
   const user: User = getAuth(app).currentUser ?? userFromLS
   const { uid } = user
 
@@ -123,7 +137,7 @@ export const getDBChild = async <T>(childPath: string) => {
 }
 
 export const getUserState = async <T>() => {
-  const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
+  const userFromLS: User = getUserFromLS()
 
   const user: User = getAuth(app).currentUser ?? userFromLS
 

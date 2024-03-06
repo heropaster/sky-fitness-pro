@@ -25,7 +25,7 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   workoutsFromDB,
   course,
   setCardEditPopUp,
-  setEditPopUpCourse
+  setEditPopUpCourse,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false)
   const navigate = useNavigate()
@@ -81,16 +81,18 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
           </Button>
         )}
       </div>
-      <Button
-        onClick={() => {
-          setCardEditPopUp('delete')
-          setEditPopUpCourse(course)
-        }}
-        variant="red"
-        width={145}
-      >
-        Удалить
-      </Button>
+      {variant === 'myProfile' && (
+        <Button
+          onClick={() => {
+            setCardEditPopUp('delete')
+            setEditPopUpCourse(course)
+          }}
+          variant="red"
+          width={145}
+        >
+          Удалить
+        </Button>
+      )}
     </div>
   )
 }

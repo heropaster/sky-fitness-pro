@@ -1,7 +1,13 @@
 import { Header, Button, FitnessCard, ProfileEdit, YesNoPopUp } from 'components'
 import { useState } from 'react'
 import { useStore } from 'store/AuthStore'
-import { useAddCourseQuery, useAllCoursesQuery, useAllWorkoutsQuery, useUserStateQuery } from 'hooks'
+import {
+  useAddCourseQuery,
+  useAllCoursesQuery,
+  useAllWorkoutsQuery,
+  useDeleteCourseQuery,
+  useUserStateQuery,
+} from 'hooks'
 import style from './ProfilePage.module.scss'
 import { imagesMap } from 'consts'
 import { getProgressTemplate } from 'helpers/helpers'
@@ -79,13 +85,15 @@ export const ProfilePage = () => {
     }
   const resultCourses = userState && [...userState.courses, editPopUpCourse[0]]
   const { mutate: addCourse } = useAddCourseQuery(resultCourses as string[], resultProgress as IUserState['progress'])
+  const indexOfEditCourse = userState?.courses.indexOf(editPopUpCourse[0]) ?? 0
+  const { mutate: deleteCourse } = useDeleteCourseQuery(editPopUpCourse[0], indexOfEditCourse)
 
   const closeFunc = () => {
     setAuthPopUp(null)
     setCardEditPopUp(null)
   }
 
-  const agreeFunc = cardEditPopUp === 'delete' ? () => {} : () => addCourse()
+  const agreeFunc = cardEditPopUp === 'delete' ? () => deleteCourse() : () => addCourse()
 
   return (
     <div className={style.container}>
