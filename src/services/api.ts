@@ -70,15 +70,22 @@ export const updateUserPassword = async ({ password }: StringObject) => {
   if (user) return updatePassword(user, password)
 }
 
-export const addCourse = async ({ course, progressTemp }: { course: string; progressTemp: IUserState['progress'] }) => {
+export const addCourse = async ({
+  course,
+  progressTemp,
+}: {
+  course: string[]
+  progressTemp: IUserState['progress']
+}) => {
   const userFromLS: User = JSON.parse(localStorage.getItem('user-storage') as string).state.user
   const user: User = getAuth(app).currentUser ?? userFromLS
   const { uid } = user
 
   const pathToUser = `users/${uid}`
+  const pathToCourses = `users/${uid}`
 
-  await update(child(db, pathToUser), {
-    courses: [course],
+  await update(child(db, pathToCourses), {
+    courses: course,
   })
 
   await update(child(db, pathToUser), {

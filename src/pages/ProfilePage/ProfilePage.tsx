@@ -5,7 +5,7 @@ import { useAddCourseQuery, useAllCoursesQuery, useAllWorkoutsQuery, useUserStat
 import style from './ProfilePage.module.scss'
 import { imagesMap } from 'consts'
 import { getProgressTemplate } from 'helpers/helpers'
-
+import type { IUserState } from 'types'
 
 export const ProfilePage = () => {
   const user = useStore((store) => store.user)
@@ -17,54 +17,44 @@ export const ProfilePage = () => {
   const { data: workoutsFromDB } = useAllWorkoutsQuery()
 
   const [isPassVisible, setIsPassVisible] = useState<boolean>(false)
-  const [authPopUp, setAuthPopUp] = useState<'loginEdit' | 'passEdit' | null>(null)
+  const [authPopUp, setAuthPopUp] = useState<'login' | 'password' | null>(null)
   const [isDropdownOpened, setIsDropdownOpened] = useState(false)
   const [cardEditPopUp, setCardEditPopUp] = useState<'delete' | 'add' | null>(null)
   const [editPopUpCourse, setEditPopUpCourse] = useState<string[]>([''])
 
-  const progress = getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB)
-  const {mutate: addCourse} = useAddCourseQuery(editPopUpCourse[0], progress)
-
-
-  const closeFunc = () => {
-    setAuthPopUp(null)
-    setCardEditPopUp(null)
-  }
-
-  const agreeFunc = cardEditPopUp === 'delete' ? removeCourse : addCourse
-
   // Элементы карточек с курсами
-  const cardElements =
-    userState && coursesFromDB && workoutsFromDB ? (
-      userState?.courses.map((course, index) => {
-        const userWorkouts = userState.progress[course]
+  const cardElements = coursesFromDB ? (
+    userState?.courses.map((course, index) => {
+      const userWorkouts = userState.progress[course]
 
-        return (
-          <FitnessCard
-            variant="myProfile"
-            key={'card' + index}
-            image={imagesMap[course]}
-            userWorkouts={userWorkouts}
-            workoutsFromDB={workoutsFromDB}
-            course={[course, coursesFromDB[course].nameRU]}
-            setCardEditPopUp={setCardEditPopUp}
-            setEditPopUpCourse={setEditPopUpCourse}
-          >
-            {coursesFromDB[course].nameRU}
-          </FitnessCard>
-        )
-      })
-    ) : (
-      <div className={style.notFound}>Нет курсов</div>
-    )
+      return (
+        <FitnessCard
+          variant="myProfile"
+          key={'card' + index}
+          image={imagesMap[course]}
+          userWorkouts={userWorkouts}
+          workoutsFromDB={workoutsFromDB}
+          course={[course, coursesFromDB[course].nameRU]}
+          setCardEditPopUp={setCardEditPopUp}
+          setEditPopUpCourse={setEditPopUpCourse}
+        >
+          {coursesFromDB[course].nameRU}
+        </FitnessCard>
+      )
+    })
+  ) : (
+    <div className={style.notFound}>Нет курсов</div>
+  )
 
-  const noAddedCourses =
-    userState && coursesFromDB && Object.keys(coursesFromDB).filter((course) => !userState.courses.includes(course))
-
-  const noAddedCourseNames = coursesFromDB && noAddedCourses?.map((course) => [course, coursesFromDB[course].nameRU])
+  const noAddedCourseNames =
+    userState &&
+    coursesFromDB &&
+    Object.keys(coursesFromDB)
+      .filter((course) => !userState.courses.includes(course))
+      .map((course) => [course, coursesFromDB[course].nameRU])
 
   // Элементы выпадающего меню на добавить курс
-  const dropdownElements = noAddedCourseNames ? (
+  const dropdownElements: JSX.Element | JSX.Element[] = noAddedCourseNames ? (
     noAddedCourseNames.map((course, index) => (
       <div
         onClick={() => {
@@ -81,11 +71,26 @@ export const ProfilePage = () => {
     <div>Все курсы уже добавлены</div>
   )
 
+  const resultProgress = coursesFromDB &&
+    workoutsFromDB &&
+    editPopUpCourse[0] !== '' && {
+      ...getProgressTemplate(coursesFromDB, editPopUpCourse, workoutsFromDB),
+      ...userState?.progress,
+    }
+  const resultCourses = userState && [...userState.courses, editPopUpCourse[0]]
+  const { mutate: addCourse } = useAddCourseQuery(resultCourses as string[], resultProgress as IUserState['progress'])
+
+  const closeFunc = () => {
+    setAuthPopUp(null)
+    setCardEditPopUp(null)
+  }
+
+  const agreeFunc = cardEditPopUp === 'delete' ? () => {} : () => addCourse()
+
   return (
     <div className={style.container}>
-      {authPopUp === 'loginEdit' && <ProfileEdit closeFunc={closeFunc} />}
-      {authPopUp === 'passEdit' && <ProfileEdit variant="password" closeFunc={closeFunc} />}
-      <YesNoPopUp variant={cardEditPopUp} course={editPopUpCourse} closeFunc={closeFunc} />
+      <ProfileEdit variant={authPopUp} closeFunc={closeFunc} />
+      <YesNoPopUp variant={cardEditPopUp} course={editPopUpCourse} agreeFunc={agreeFunc} closeFunc={closeFunc} />
 
       <div className={style.content}>
         <Header />
@@ -109,11 +114,11 @@ export const ProfilePage = () => {
         </p>
 
         <div className={style.editBox}>
-          <Button fontSize={18} onClick={() => setAuthPopUp('loginEdit')}>
+          <Button fontSize={18} onClick={() => setAuthPopUp('login')}>
             Редактировать логин
           </Button>
 
-          <Button fontSize={18} onClick={() => setAuthPopUp('passEdit')}>
+          <Button fontSize={18} onClick={() => setAuthPopUp('password')}>
             Редактировать пароль
           </Button>
         </div>

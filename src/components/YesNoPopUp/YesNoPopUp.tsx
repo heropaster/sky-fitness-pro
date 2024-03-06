@@ -12,9 +12,9 @@ interface YesNoPopUpProps {
 
 export const YesNoPopUp: FC<PropsWithChildren & YesNoPopUpProps> = ({
   variant = 'add',
-  closeFunc,
+  closeFunc = () => {},
   course,
-  agreeFunc,
+  agreeFunc = () => {},
 }) => {
   if (variant === null) return
 
@@ -30,7 +30,14 @@ export const YesNoPopUp: FC<PropsWithChildren & YesNoPopUpProps> = ({
         </p>
 
         <div className={style.buttons}>
-          <Button onClick={agreeFunc} width={100} fontSize={18}>
+          <Button
+            onClick={() => {
+              agreeFunc()
+              closeFunc()
+            }}
+            width={100}
+            fontSize={18}
+          >
             Да
           </Button>
           <Button onClick={closeFunc} width={100} variant="red" fontSize={18}>

@@ -6,7 +6,7 @@ import type { FC, MouseEvent, PropsWithChildren } from 'react'
 import style from './ProfileEdit.module.scss'
 
 interface ProfileEditProps {
-  variant?: 'login' | 'password'
+  variant?: 'login' | 'password' | null
   closeFunc?: () => void
 }
 
@@ -30,6 +30,8 @@ export const ProfileEdit: FC<PropsWithChildren & ProfileEditProps> = ({ variant 
       }
     }
   }
+
+  if (variant === null) return
 
   return (
     <div className={style.box} onClick={closeFunc}>

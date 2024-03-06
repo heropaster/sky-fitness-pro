@@ -7,12 +7,10 @@ export const createValidVideoUrl = (url: string) => {
 
 // Возвращает шаблон объекта прогресса по курсу со стартовыми значениями
 export const getProgressTemplate = (
-  coursesFromDB: ICourses | undefined,
+  coursesFromDB: ICourses,
   currentCourse: string[],
-  workoutsFromDB: IWorkouts | undefined,
-): IUserState["progress"] | undefined => {
-  if (!(coursesFromDB && currentCourse[0] !== '' && workoutsFromDB)) return  
-
+  workoutsFromDB: IWorkouts,
+): IUserState['progress'] => {
   const editCourseWorkoutsArr = coursesFromDB[currentCourse[0]]?.workouts
 
   const exercisesQuantityArr: [
