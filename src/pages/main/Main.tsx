@@ -20,7 +20,6 @@ export const Main = () => {
       key={card._id}
       image={imagesMap[card._id]}
       onClick={() => history(`courses/${card.nameEN}`)}
-      course={''}
     >
       {card.nameRU}
     </FitnessCard>
