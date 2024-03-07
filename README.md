@@ -16,10 +16,10 @@ _Приложение для онлайн тренировок с видеома
 
 ## Команда
 
-* [Дмитрий](https://github.com/heropaster)
-* [Денис](https://github.com/s4utner)
-* [Евгений](https://github.com/Greblips)
-* [Александр](https://github.com/Alex-Volo)
+- [Дмитрий](https://github.com/heropaster)
+- [Денис](https://github.com/s4utner)
+- [Евгений](https://github.com/Greblips)
+- [Александр](https://github.com/Alex-Volo)
 
 ## Техническое задание
 
