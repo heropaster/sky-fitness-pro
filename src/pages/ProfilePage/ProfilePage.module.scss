@@ -48,6 +48,7 @@
 }
 
 .btnContainer {
+  margin-left: 25px;
   position: relative;
   display: flex;
   align-items: center;
@@ -106,6 +107,11 @@
   }
   .title {
     font-size: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    height: 200px;
   }
   .cards {
     margin-bottom: 20px;
@@ -114,5 +120,17 @@
     justify-content: center;
     width: 100%;
     gap: 40px;
+  }
+  .btnContainer {
+    margin: 0;
+  }
+  .dropdownCourses {
+    top: 50px;
+    left: 20px;
+  }
+  .dropdown_open {
+    border-color: #d0cece;
+    max-height: 200px;
+    padding: 5px;
   }
 }

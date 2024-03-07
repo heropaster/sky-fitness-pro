@@ -143,7 +143,7 @@ export const ProfilePage = () => {
         </div>
 
         <h2 className={style.title}>
-          Мои курсы&nbsp;&nbsp;&nbsp;&nbsp;
+          Мои курсы
           <div className={style.btnContainer}>
             <Button onClick={() => setIsDropdownOpened(!isDropdownOpened)} width={170} variant="transparent">
               Добавить +
