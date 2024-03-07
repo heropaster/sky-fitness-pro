@@ -39,7 +39,7 @@
 
   &:active {
     background: #d4eb8a;
-    border: 1px solid #ebffab;
+    border: 1px solid #d4eb8a;
   }
 }
 
@@ -54,5 +54,27 @@
 
   &:active {
     background: #d9d9d9;
+  }
+}
+
+.red {
+  background: #f65a5a;
+  border: 1px solid #f65a5a;
+  color: #fff;
+
+  &:hover {
+    background: #ff7d7d;
+    border: 1px solid #ff7d7d;
+  }
+
+  &:active {
+    background: #e44040;
+    border: 1px solid #e44040;
+  }
+}
+
+@media screen and (max-width: 430px) {
+  .btn {
+    height: 40px;
   }
 }

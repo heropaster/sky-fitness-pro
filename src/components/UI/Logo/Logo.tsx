@@ -1,5 +1,5 @@
-import type { FC, PropsWithChildren } from 'react'
 import { useNavigate } from 'react-router-dom'
+import type { FC, PropsWithChildren } from 'react'
 import styles from './Logo.module.scss'
 
 interface LogoProps {
@@ -11,7 +11,14 @@ export const Logo: FC<PropsWithChildren & LogoProps> = ({ color = 'black' }) => 
 
   return (
     <div className={styles.logo} onClick={() => navigate('/')}>
-      <svg style={{marginTop: "2px"}} width="29" height="20" viewBox="0 0 29 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg
+        style={{ marginTop: '2px' }}
+        width="29"
+        height="20"
+        viewBox="0 0 29 20"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
         <path
           d="M3.68844 19.4581C1.54195 20.698 0 19.6648 0 17.827C0 15.8705 0 10.0003 0 10.0003C0 10.0003 0 4.13012 0 2.1737C0 0.33591 1.54099 -0.697309 3.68844 0.542554C7.03156 2.47314 17.06 8.26682 17.06 8.26682C18.3934 9.03695 18.3934 10.9628 17.06 11.7329C17.06 11.7338 7.03156 17.5275 3.68844 19.4581Z"
           fill="#00C1FF"

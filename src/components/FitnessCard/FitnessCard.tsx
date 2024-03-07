@@ -1,8 +1,8 @@
-import { Button } from 'components'
-import { useState, type FC, type PropsWithChildren } from 'react'
-import styles from './FitnessCard.module.scss'
-import type { IWorkouts } from 'types'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import type { Dispatch, SetStateAction, FC, PropsWithChildren } from 'react'
+import type { IWorkouts } from 'types'
+import styles from './FitnessCard.module.scss'
 
 interface FitnessCardProps {
   variant?: 'main' | 'myProfile'
@@ -10,7 +10,9 @@ interface FitnessCardProps {
   onClick?: () => void
   userWorkouts?: { [index: string]: [boolean, ...number[]] }
   workoutsFromDB?: IWorkouts
-  course: string
+  course?: string[]
+  setCardEditPopUp?: Dispatch<SetStateAction<'delete' | 'add' | null>>
+  setEditPopUpCourse?: Dispatch<SetStateAction<string[]>>
 }
 
 export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
@@ -20,7 +22,9 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
   onClick,
   userWorkouts,
   workoutsFromDB,
-  course,
+  course = ['yoga'],
+  setCardEditPopUp,
+  setEditPopUpCourse,
 }) => {
   const [isFlipped, setIsFlipped] = useState(false)
   const navigate = useNavigate()
@@ -32,20 +36,16 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
         }
       : onClick
 
-  // Здесь можно вынести li-шку в отдельный компонент, но пока заморачиваться не захотел
   const workoutElements =
     userWorkouts &&
     workoutsFromDB &&
     Object.keys(userWorkouts).map((workout, index) => {
       const [heading, ...description] = workoutsFromDB[workout].name.split('/')
       const isDone = userWorkouts[workout][0]
-      // Чтобы посмотреть как выглядят выполненные, можно закоментировать строку выше
-      // И раскомментировать строку ниже
-      // const isDone = true;
 
       return (
         <li
-          onClick={() => navigate(`/workouts/${course}/${workout}`)}
+          onClick={() => navigate(`/workouts/${course[0]}/${workout}`)}
           className={`${styles.workoutItem} ${isDone && styles.done}`}
           key={'workout' + index}
         >
@@ -72,11 +72,17 @@ export const FitnessCard: FC<PropsWithChildren & FitnessCardProps> = ({
         className={`${styles.card} ${isFlipped && styles.flip_face} ${variant === 'myProfile' && styles.myProfile}`}
       >
         {children}
-
         {variant === 'myProfile' && (
-          <Button variant="green" width={150}>
-            Перейти →
-          </Button>
+          <div
+            className={styles.delete}
+            onClick={(e) => {
+              e.stopPropagation()
+              setCardEditPopUp?.('delete')
+              setEditPopUpCourse?.(course)
+            }}
+          >
+            &times;
+          </div>
         )}
       </div>
     </div>

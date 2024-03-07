@@ -1,4 +1,4 @@
-import { Header, Button, ProgressBar, UpdateProgressModal, SuccessProgressModal } from 'components'
+import { Header, Button, ProgressBar, UpdateProgressModal, SuccessProgressModal, LoaderSpinner } from 'components'
 import { useWorkoutQuery, useUserStateQuery, useCourseQuery, useUpdateUserProgress } from 'hooks'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -12,16 +12,20 @@ export const WorkoutPage = () => {
   const { id = '', course = '' } = useParams()
   const navigate = useNavigate()
 
-  const { data: userState } = useUserStateQuery()
-  const { data: courseFromBD } = useCourseQuery(course)
-  const { data: workout, isSuccess } = useWorkoutQuery(id)
+  const { data: userState, isLoading: isUserStateLoading } = useUserStateQuery()
+  const { data: courseFromBD, isLoading: isCourseFromBDLoading } = useCourseQuery(course)
+  const { data: workout, isLoading: isWorkoutLoading, isSuccess } = useWorkoutQuery(id)
 
-  const progressArrayForQuary: [boolean, ...number[]] = [true]
+  const progressArrayForQuery: [boolean, ...number[]] = [true]
   const { mutate: updateUserProgress, isSuccess: isSuccessUpdateUserProgress } = useUpdateUserProgress({
     course: course,
     workoutId: workout?._id as string,
-    progressArray: progressArrayForQuary,
+    progressArray: progressArrayForQuery,
   })
+
+  if (isUserStateLoading || isCourseFromBDLoading || isWorkoutLoading) {
+    return <LoaderSpinner />
+  }
 
   const courseName = courseFromBD?.nameRU
   const workouts = courseFromBD?.workouts
@@ -63,7 +67,7 @@ export const WorkoutPage = () => {
         <Header />
         <nav className={styles.navigation}>
           {previousWorkout && (
-            <a
+            <p
               className={styles.previousWorkoutButton}
               onClick={() => {
                 if (previousWorkout) {
@@ -72,10 +76,10 @@ export const WorkoutPage = () => {
               }}
             >
               ← Предыдущая тренировка
-            </a>
+            </p>
           )}
           {nextWorkout && (
-            <a
+            <p
               className={styles.nextWorkoutButton}
               onClick={() => {
                 if (nextWorkout) {
@@ -84,7 +88,7 @@ export const WorkoutPage = () => {
               }}
             >
               Следующая тренировка →
-            </a>
+            </p>
           )}
         </nav>
         <h1 className={styles.title}>{courseName}</h1>

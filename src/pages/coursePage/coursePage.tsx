@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { Application, Header } from 'components'
+import { Application, Header, LoaderSpinner } from 'components'
 import { useCourseQuery } from 'hooks'
 import { PromoImage } from 'components/PromoImage/PromoImage.tsx'
 import type { CourseNamesEnum } from 'types'
@@ -7,13 +7,18 @@ import style from './coursePage.module.scss'
 
 export const CoursePage = () => {
   const { name } = useParams()
-  const { data } = useCourseQuery(name?.toLowerCase() as string)
+  const { data, isLoading } = useCourseQuery(name?.toLowerCase() as string)
+
+  if (isLoading) {
+    return <LoaderSpinner />
+  }
+
   return (
     <div className={style.container}>
       {data ? (
         <>
-          <Header color="black" isButtonHided={true} />
           <div className={style.content}>
+            <Header color="black" isButtonHided={true} />
             <div className={style.preview}>
               <PromoImage name={data.nameEN as CourseNamesEnum} />
             </div>

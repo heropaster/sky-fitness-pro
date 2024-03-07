@@ -17,7 +17,9 @@
 }
 
 .content {
-  width: 1160px;
+  max-width: 1160px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .navigation {
@@ -145,4 +147,46 @@
   box-sizing: border-box;
   padding: 36px 42px 42px;
   border-radius: 12px;
+}
+
+//Адаптив
+@media screen and (max-width: 430px) {
+  .navigation {
+    width: 100%;
+  }
+  .previousWorkoutButton {
+    font-size: 16px;
+  }
+  .nextWorkoutButton {
+    font-size: 16px;
+  }
+
+  .title {
+    text-align: center;
+  }
+  .heading {
+    text-align: center;
+  }
+  .video {
+    padding: 10px;
+    margin-top: 40px;
+    width: 430px;
+    height: 260px;
+    margin-bottom: 75px;
+  }
+  .description {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .progress {
+    width: 430px;
+    &Item {
+      align-items: center;
+      width: 420px;
+    }
+    &Text {
+      width: 200px;
+    }
+  }
 }

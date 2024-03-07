@@ -1,11 +1,11 @@
 import { Title } from 'components/UI/Title/Title.tsx'
+import type { FC } from 'react'
+import type { CourseNamesEnum } from 'types'
 import yogaImg from 'assets/img/yoga.png'
 import stratchingImg from 'assets/img/stratching.png'
 import danceImg from 'assets/img/dance.png'
 import stepImg from 'assets/img/step.png'
 import bodyflexImg from 'assets/img/bodyflex.png'
-import type { FC } from 'react'
-import type { CourseNamesEnum } from 'types'
 import styles from './PromoImage.module.scss'
 
 interface PromoImageProps {
@@ -19,6 +19,7 @@ const namesMap = {
   BodyFlex: { ruName: 'Бодифлекс', img: bodyflexImg },
   DanceFitness: { ruName: 'Танцевальный фитнес', img: danceImg },
 }
+
 export const PromoImage: FC<PromoImageProps> = ({ name }) => {
   const course = namesMap[name]
   return (

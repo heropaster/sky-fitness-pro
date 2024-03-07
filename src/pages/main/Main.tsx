@@ -1,28 +1,27 @@
-import { Header, Button, FitnessCard } from 'components'
-import { imagesMap } from 'consts'
-import sticker from 'assets/img/sticker.png'
+import { Header, Button, FitnessCard, LoaderSpinner } from 'components'
 import { useNavigate } from 'react-router-dom'
 import { useAllCoursesQuery } from 'hooks'
+import { imagesMap } from 'consts'
+import sticker from 'assets/img/sticker.png'
 import style from './Main.module.scss'
-import { LoaderSpinner } from 'components/LoaderSpinner/LoaderSpinner'
 
 export const Main = () => {
   const history = useNavigate()
   const { data, isLoading, isError, error } = useAllCoursesQuery()
 
-  if (isLoading)
-    return (
-      <div>
-        <LoaderSpinner />
-      </div>
-    )
+  if (isLoading) return <LoaderSpinner />
   if (isError) return <div>{error.message}</div>
   if (!data) return
 
   const coursesArray = Object.values(data)
 
   const cardsElements = coursesArray.map((card) => (
-   <FitnessCard key={card._id} image={imagesMap[card._id]} onClick={() => history(`courses/${card.nameEN}`)} course={''}>
+    <FitnessCard
+      key={card._id}
+      image={imagesMap[card._id]}
+      onClick={() => history(`courses/${card.nameEN}`)}
+      course={''}
+    >
       {card.nameRU}
     </FitnessCard>
   ))
@@ -41,7 +40,7 @@ export const Main = () => {
         <div className={style.fitnessCards}>{cardsElements}</div>
 
         <footer className={style.footer}>
-          <Button onClick={() => window.scrollTo(0, 0)} variant="green" width={150}>
+          <Button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} variant="green" width={150}>
             Наверх ↑
           </Button>
         </footer>

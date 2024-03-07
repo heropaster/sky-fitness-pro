@@ -1,10 +1,10 @@
-import styles from './AuthPage.module.scss'
 import { Input, Logo, Button } from 'components'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useStore } from 'store/AuthStore'
 import { createNewUser, loginUser } from 'services/api'
 import { validateEmail, validatePassword } from 'helpers/helpersFunction'
+import styles from './AuthPage.module.scss'
 
 export function AuthPage() {
   // юзер: JohnDow@mail.mail пароль: asdfasdf
@@ -53,8 +53,6 @@ export function AuthPage() {
       default: {
         try {
           const response = await loginUser({ email: login as string, password: password as string })
-
-          console.log(response, 'Это ответ на логин')
 
           setUser(response)
           navigate('/profile')

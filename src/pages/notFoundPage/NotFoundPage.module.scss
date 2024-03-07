@@ -7,7 +7,9 @@
 }
 
 .content {
-  width: 1160px;
+  max-width: 1160px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .wrapper {
@@ -27,6 +29,23 @@
     &Message {
       font-size: 48px;
       font-weight: 400;
+    }
+  }
+}
+
+//Адаптив
+@media screen and (max-width: 430px) {
+  .wrapper {
+    .info {
+      font-size: 60px;
+      font-weight: 700;
+      line-height: 42px;
+      text-align: center;
+
+      &Message {
+        font-size: 26px;
+        font-weight: 400;
+      }
     }
   }
 }

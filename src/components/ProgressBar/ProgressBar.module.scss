@@ -60,3 +60,10 @@
   background-color: #9a48f1;
   color: #9a48f1;
 }
+
+//Адаптив
+@media screen and (max-width: 430px) {
+  .container {
+    width: 220px;
+  }
+}

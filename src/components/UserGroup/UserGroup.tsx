@@ -1,9 +1,9 @@
 import { Button } from 'components'
 import { useStore } from 'store/AuthStore'
 import { useNavigate } from 'react-router-dom'
+import { logoutUser } from 'services/api'
 import type { FC } from 'react'
 import style from './UserGroup.module.scss'
-import { logoutUser } from 'services/api'
 
 interface UserGroupProps {
   color: 'black' | 'white'

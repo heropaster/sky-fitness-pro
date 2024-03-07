@@ -1,8 +1,8 @@
-import type { FC, PropsWithChildren } from 'react'
 import { Logo, Button, UserGroup } from 'components'
-import styles from './Header.module.scss'
 import { useNavigate } from 'react-router'
 import { useStore } from 'store/AuthStore'
+import type { FC, PropsWithChildren } from 'react'
+import styles from './Header.module.scss'
 
 interface HeaderProps {
   color?: 'black' | 'white'

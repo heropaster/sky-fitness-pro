@@ -71,3 +71,11 @@
     line-height: 24px;
   }
 }
+
+.errorMessage {
+  margin-top: 16px;
+  font-style: italic;
+  color: red;
+  text-align: center;
+  max-width: 350px;
+}

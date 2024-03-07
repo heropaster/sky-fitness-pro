@@ -1,6 +1,6 @@
 import { Button } from 'components'
-import style from './Application.module.scss'
 import image from 'assets/images/applicationImage.png'
+import style from './Application.module.scss'
 
 export const Application = () => (
   <div className={style.container}>

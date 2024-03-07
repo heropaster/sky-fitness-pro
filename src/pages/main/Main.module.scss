@@ -7,13 +7,14 @@
 }
 
 .content {
-  width: 1160px;
+  max-width: 1160px;
+  width: 100%;
   margin: 0 auto;
 }
 
 .topTitle {
   margin-top: 35px;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 23px;
   font-weight: normal;
   letter-spacing: -0.05px;
@@ -52,3 +53,45 @@
   text-align: center;
 }
 
+//Адаптив
+@media screen and (max-width: 430px) {
+  .topTitle {
+    margin-top: 40px;
+    font-size: 1.2rem;
+    text-align: center;
+    width: 100%;
+  }
+  .fitnessCards {
+    margin-top: 17px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+  }
+
+  .leadGroup {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .leadText {
+    padding: 0px 5px;
+    display: flex;
+    text-align: center;
+    line-height: 1em;
+    font-size: 1.8rem;
+  }
+  .sticker {
+    width: 130px;
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 70px;
+    z-index: 100;
+  }
+  .fitnessCards {
+    margin-top: 55px;
+  }
+}
