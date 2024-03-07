@@ -8,19 +8,19 @@ _Приложение для онлайн тренировок с видеома
 
 ## Установка и запуск
 
-    - `npm i` для установки проекта
-    - `npm run dev` для запуска проекта в режиме разработки
-    - `npm run build` билд проекта
-    - `npm run preview` просмотр проекта после билда
+- `npm i` для установки проекта
+- `npm run dev` для запуска проекта в режиме разработки
+- `npm run build` билд проекта
+- `npm run preview` просмотр проекта после билда
 
 После запуска приложение откроется по адресу: http://localhost:5173/
 
 ## Команда
 
-    - [Дмитрий](https://github.com/heropaster)
-    - [Денис](https://github.com/s4utner)
-    - [Евгений](https://github.com/Greblips)
-    - [Александр](https://github.com/Alex-Volo)
+- [Дмитрий](https://github.com/heropaster)
+- [Денис](https://github.com/s4utner)
+- [Евгений](https://github.com/Greblips)
+- [Александр](https://github.com/Alex-Volo)
 
 ## Техническое задание
 
