@@ -26,14 +26,6 @@ export const UpdateProgressModal: FC<UpdateProgressModalProps> = ({
   const [errorMessage, setErrorMessage] = useState('')
   const [isButtonDisabled, setIsButtonDisabled] = useState(false)
 
-  const handleButtonActive = () => {
-    setIsButtonDisabled(false)
-  }
-
-  const handleButtonDisabled = () => {
-    setIsButtonDisabled(true)
-  }
-
   const requiredProgress = workout.exercises.map((el) => el.quantity)
   const progressValueArray = progressValue.map((el) => Number(el.value))
   const [, ...shortCurrentProgressArray] = currentProgressArray
@@ -50,7 +42,7 @@ export const UpdateProgressModal: FC<UpdateProgressModalProps> = ({
   })
 
   const handleUpdateUserProgress = () => {
-    handleButtonDisabled()
+    setIsButtonDisabled(true)
     const isNegativeValue = progressValue.some((value) => Number(value.value) < 0)
 
     if (isNegativeValue) {
@@ -69,7 +61,7 @@ export const UpdateProgressModal: FC<UpdateProgressModalProps> = ({
 
   useEffect(() => {
     setErrorMessage('')
-    handleButtonActive()
+    setIsButtonDisabled(false)
   }, [progressValue])
 
   return (
@@ -77,7 +69,7 @@ export const UpdateProgressModal: FC<UpdateProgressModalProps> = ({
       className={styles.background}
       onClick={() => {
         activateButton()
-        handleButtonActive()
+        setIsButtonDisabled(false)
         closeModal()
       }}
     >

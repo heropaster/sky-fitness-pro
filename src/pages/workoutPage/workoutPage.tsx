@@ -37,30 +37,6 @@ export const WorkoutPage = () => {
   const [, ...currentProgress] = progressArray
   const isDone = progressArray[0]
 
-  const handleOpenUpdateModal = () => {
-    setIsUpdateModalVisible(true)
-  }
-
-  const handleOpenSuccessModal = () => {
-    setIsSuccessModalVisible(true)
-  }
-
-  const handleCloseUpdateModal = () => {
-    setIsUpdateModalVisible(false)
-  }
-
-  const handleCloseSuccessModal = () => {
-    setIsSuccessModalVisible(false)
-  }
-
-  const handleButtonActive = () => {
-    setIsButtonDisabled(false)
-  }
-
-  const handleButtonDisabled = () => {
-    setIsButtonDisabled(true)
-  }
-
   return workout ? (
     <div className={isUpdateModalVisible || isSuccessModalVisible ? styles.modalContainer : styles.courseContainer}>
       <div className={styles.content}>
@@ -122,12 +98,12 @@ export const WorkoutPage = () => {
                 fontSize={18}
                 disabled={isButtonDisabled}
                 onClick={() => {
-                  handleButtonDisabled()
+                  setIsButtonDisabled(true)
 
                   if (workout.exercises) {
-                    handleOpenUpdateModal()
+                    setIsUpdateModalVisible(true)
                   } else {
-                    handleOpenSuccessModal()
+                    setIsSuccessModalVisible(true)
                     updateUserProgress()
                   }
                 }}
@@ -157,16 +133,16 @@ export const WorkoutPage = () => {
           courseId={course}
           workout={workout}
           currentProgressArray={progressArray as [boolean, ...number[]]}
-          closeModal={handleCloseUpdateModal}
-          activateButton={handleButtonActive}
+          closeModal={() => setIsUpdateModalVisible(false)}
+          activateButton={() => setIsButtonDisabled(false)}
         />
       )}
       {isSuccessUpdateUserProgress && isSuccessModalVisible && (
         <div
           className={styles.successModalBackground}
           onClick={() => {
-            handleButtonActive()
-            handleCloseSuccessModal()
+            setIsButtonDisabled(false)
+            setIsSuccessModalVisible(false)
           }}
         >
           <div className={styles.successModalContainer} onClick={(event) => event.stopPropagation()}>
