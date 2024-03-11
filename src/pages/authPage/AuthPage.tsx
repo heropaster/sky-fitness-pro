@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { useStore } from 'store/AuthStore'
 import { createNewUser, loginUser } from 'services/api'
-import { validateEmail, validatePassword } from 'helpers/helpersFunction'
+import { validateInput } from 'helpers/helpersFunction'
 import styles from './AuthPage.module.scss'
 
 export function AuthPage() {
@@ -15,97 +15,53 @@ export function AuthPage() {
   const [errorMessage, setErrorMessage] = useState('')
   const navigate = useNavigate()
 
-  interface login {
-    value: string | number
-    placeholder: string
-  }
-
   const setUser = useStore((state) => state.setUser)
 
   // Переключение между логином и регистрацией и сбрасывание ошибки
   const handleIsLoginMode = () => {
     setIsLoginMode(false)
   }
+
   // Функция входа пользователя и валидация
   const handleLogin = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    switch (true) {
-      case !login && !password: {
-        setErrorMessage('Все поля должны быть заполнены')
-        return
-      }
-      case !login: {
-        setErrorMessage('Введите логин')
-        return
-      }
-      case !password: {
-        setErrorMessage('Введите пароль')
-        return
-      }
-      case !validateEmail(login as string): {
-        setErrorMessage('Введите корректный email')
-        return
-      }
-      case !validatePassword(password as string): {
-        setErrorMessage('Пароль должен содержать от 6 до 64 символов')
-        return
-      }
-      default: {
-        try {
-          const response = await loginUser({ email: login as string, password: password as string })
+    const errorMessage = validateInput(login as string, password as string, true)
 
-          setUser(response)
-          navigate('/profile')
-          return response
-        } catch (error) {
-          if (error instanceof Error) setErrorMessage(error.message)
-        }
-      }
+    if (errorMessage) {
+      setErrorMessage(errorMessage)
+      return
+    }
+
+    try {
+      const response = await loginUser({ email: login as string, password: password as string })
+      setUser(response)
+      navigate('/profile')
+      return response
+    } catch (error) {
+      if (error instanceof Error) setErrorMessage(error.message)
     }
   }
 
   // Функция регистрации пользователя и валидация
   const handleRegistration = async (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    switch (true) {
-      case !login && !password: {
-        setErrorMessage('Все поля должны быть заполнены')
-        break
-      }
-      case !login: {
-        setErrorMessage('Введите логин')
-        break
-      }
-      case !password: {
-        setErrorMessage('Введите пароль')
-        break
-      }
-      case password !== repeatPassword: {
-        setErrorMessage('пароли должны совпадать!')
-        break
-      }
-      case !validateEmail(login as string): {
-        setErrorMessage('Введите корректный email')
-        return
-      }
-      case !validatePassword(password as string): {
-        setErrorMessage('Пароль должен содержать от 6 до 64 символов')
-        return
-      }
-      default: {
-        try {
-          const response = await createNewUser({ email: login as string, password: password as string })
-          console.log(response, 'Это ответ на логин')
+    const errorMessage = validateInput(login as string, password as string, false, repeatPassword as string)
 
-          setUser(response)
-          navigate('/profile')
-          return response
-        } catch (error) {
-          if (error instanceof Error) setErrorMessage(error.message)
-        }
-      }
+    if (errorMessage) {
+      setErrorMessage(errorMessage)
+      return
+    }
+
+    try {
+      const response = await createNewUser({ email: login as string, password: password as string })
+      setUser(response)
+      navigate('/profile')
+      return response
+    } catch (error) {
+      if (error instanceof Error) setErrorMessage(error.message)
     }
   }
+
   // Сбрасывает ошибку при вводе в инпут и при переключении на регистрацию
   useEffect(() => {
     setErrorMessage('')

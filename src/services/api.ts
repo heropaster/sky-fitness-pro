@@ -25,6 +25,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig)
+
 type StringObject = Record<string, string>
 
 const db = ref(getDatabase(app))
